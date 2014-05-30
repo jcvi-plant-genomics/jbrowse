@@ -48,10 +48,12 @@ constructor: function( args ) {
  * which is the final processed configuration object
  */
 getFinalConfig: function() {
+
     return this.finalConfig || ( this.finalConfig = function() {
         var thisB = this;
         var bootstrapConf = this._applyDefaults( lang.clone( this.bootConfig ), this.defaults );
-        return this._loadIncludes( this._fillTemplates( bootstrapConf, bootstrapConf ) )
+        
+	return this._loadIncludes( this._fillTemplates( bootstrapConf, bootstrapConf ) )
             .then( function( includedConfig ) {
 
                        // merge the boot config *into* the included config last, so
@@ -67,6 +69,7 @@ getFinalConfig: function() {
 
                        return finalConf;
                    });
+
     }.call(this) );
 },
 
@@ -123,16 +126,17 @@ _fillTemplates: function( subconfig, config ) {
 _loadIncludes: function( inputConfig ) {
     var thisB = this;
     inputConfig = lang.clone( inputConfig );
-
+    
     function _loadRecur( config, upstreamConf ) {
         var sourceUrl = config.sourceUrl || config.baseUrl;
-        var newUpstreamConf = thisB._mergeConfigs( lang.clone( upstreamConf ), config );
+	var newUpstreamConf = thisB._mergeConfigs( lang.clone( upstreamConf ), config );	
         var includes = thisB._fillTemplates(
             thisB._regularizeIncludes( config.include || [] ),
             newUpstreamConf
         );
         delete config.include;
 
+	
         var loads = array.map(
             includes, function( include ) {
                 return thisB._loadInclude( include, sourceUrl )
@@ -143,14 +147,22 @@ _loadIncludes: function( inputConfig ) {
                                );
                            });
             });
+
+	//msarmien
+	//logging
+	var newurl = config.sourceUrl;
+	if(typeof(newurl) != "undefined"){
+	    newurl = newurl.replace(config.baseUrl,"");
+	}
         return all( loads )
             .then( function( includedDataObjects ) {
-                       array.forEach( includedDataObjects, function( includedData ) {
-                                          config = thisB._mergeConfigs( config, includedData );
+                       array.forEach( includedDataObjects, function( includedData ) {			                  
+                                          config = thisB._mergeConfigs( config, includedData ); 
                                       });
                        return config;
                    });
-    }
+    
+}
 
     return _loadRecur( inputConfig, {} );
 },
@@ -267,7 +279,7 @@ _mergeConfigs: function( a, b ) {
         if( prop == 'tracks' && (prop in a) ) {
             a[prop] = this._mergeTrackConfigs( a[prop] || [], b[prop] || [] );
         }
-        else if ( ! this._noRecursiveMerge( prop )
+	else if ( ! this._noRecursiveMerge( prop )
                   &&(prop in a)
                   && ("object" == typeof b[prop])
                   && ("object" == typeof a[prop]) ) {
@@ -295,15 +307,17 @@ _mergeTrackConfigs: function( a, b ) {
         aTracks[t.label] = t;
     });
 
+
     array.forEach( b, function(bT) {
         var aT = aTracks[bT.label];
+
         if( aT ) {
             this._mergeConfigs( aT, bT );
         } else {
             a.push( bT );
         }
     },this);
-
+    
     return a;
 }
 

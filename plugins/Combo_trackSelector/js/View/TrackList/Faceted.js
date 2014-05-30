@@ -31,9 +31,10 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
      * @constructs
      */
    constructor: function(args) {
+       var thisB = this;
        this.browser = args.browser;
        this.tracksActive = {};
-       this.config = args;
+       this.newconfig = args;
 
        // construct the discriminator for whether we will display a
        // facet selector for this facet
@@ -186,7 +187,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
         dojo.create('div',
                     {
                         className: 'faceted_tracksel_on_off tab',
-                        innerHTML: '<img src="'+this.browser.resolveUrl('img/left_arrow.png')+'"><div>Select<br>tracks</div>'
+                        innerHTML: '<img src="'+this.browser.resolveUrl('img/left_arrow.png')+'"><div>Select<br>tracks!</div>'
                     },
                     this.containerElem
                    );
@@ -334,7 +335,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
                id: 'trackSelectGrid',
                store: this.trackDataStore,
                selectable: true,
-               escapeHTMLInData: ('escapeHTMLInData' in this.config) ? this.config.escapeHTMLInData : false,
+               escapeHTMLInData: ('escapeHTMLInData' in this.newconfig) ? this.newconfig.escapeHTMLInData : false,
                noDataMessage: "No tracks match the filtering criteria.",
                structure: [
                    dojo.map(
@@ -356,7 +357,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
         );
 
         // set the grid's initial sort index
-        var sortIndex = this.config.initialSortColumn || 0;
+        var sortIndex = this.newconfig.initialSortColumn || 0;
         if( typeof sortIndex == 'string' )
             sortIndex = array.indexOf( displayColumns, sortIndex );
         grid.setSortIndex( sortIndex+1 );
@@ -375,7 +376,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
         // make renameFacets if needed, and lowercase all the keys to
         // make it case-insensitive
         this.renameFacets = this.renameFacets || function(){
-            var renameFacets = this.config.renameFacets;
+            var renameFacets = this.newconfig.renameFacets;
             var lc = {};
             for( var k in renameFacets ) {
                 lc[ k.toLowerCase() ] = renameFacets[k];
@@ -520,7 +521,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
         // for ones that are not identity attributes, and have an
         // average bucket size greater than 1
         var selectableFacets =
-            dojo.filter( this.config.selectableFacets || store.getFacetNames(),
+            dojo.filter( this.newconfig.selectableFacets || store.getFacetNames(),
                          function( facetName ) {
                              return this._isSelectableFacet( facetName, this.trackDataStore );
                          },
@@ -724,6 +725,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
                  );
              }
 
+
              // finally, if something is selected in here, but we have
              // not come up with any track labels, then insert a dummy
              // track label value that will never match, because the
@@ -783,6 +785,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
      * @private
      */
     _updateGridSelections: function() {
+
         // keep selection events from firing while we mess with the
         // grid
         this._ifNotSuppressed('gridUpdate', function(){

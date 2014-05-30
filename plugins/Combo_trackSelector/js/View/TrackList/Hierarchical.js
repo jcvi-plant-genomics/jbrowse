@@ -66,12 +66,14 @@ return declare(
     buildRendering: function() {
         this.inherited(arguments);
 
+	console.log("Inside Hierarchical");
+
         var topPane = new ContentPane({ className: 'header' });
         this.addChild( topPane );
         dom.create(
             'h2',
             { className: 'title',
-              innerHTML: 'Available Tracks'
+              innerHTML: 'Available Tracks Test'
             },
             topPane.containerNode );
 

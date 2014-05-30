@@ -783,6 +783,7 @@ initView: function() {
 },
 
 createCombinationTrack: function() {
+
     if(this._combinationTrackCount === undefined) this._combinationTrackCount = 0;
     var d = new Deferred();
     var storeConf = {
@@ -1069,8 +1070,6 @@ _initEventRouting: function() {
                        });
     });
 
-
-
     that.subscribe('/jbrowse/v1/v/tracks/hide', function( trackConfigs ) {
         that.publish( '/jbrowse/v1/c/tracks/hide', trackConfigs );
     });
@@ -1165,6 +1164,7 @@ _reportCustomUsageStats: function(stats) {
  * instantiating it if necessary.
  */
 getStore: function( storeName, callback ) {
+
     if( !callback ) throw 'invalid arguments';
 
     var storeCache = this._storeCache || {};
@@ -1178,6 +1178,7 @@ getStore: function( storeName, callback ) {
     }
 
     var conf = this.config.stores[storeName];
+
     if( ! conf ) {
         console.warn( "store '"+storeName+"' not found" );
         callback( null );
@@ -1217,6 +1218,7 @@ getStore: function( storeName, callback ) {
  */
 uniqCounter: 0,
 addStoreConfig: function( /**String*/ name, /**Object*/ storeConfig ) {
+
     name = name || 'addStore'+this.uniqCounter++;
 
     if( ! this.config.stores )
@@ -1443,7 +1445,7 @@ loadConfig: function () {
                                var tracks = finishedConfig.tracks || [];
                                delete finishedConfig.tracks;
                                this._addTrackConfigs( tracks );
-
+	     
                                // coerce some config keys to boolean
                                dojo.forEach( ['show_tracklist','show_nav','show_overview'], function(v) {
                                                  this.config[v] = this._coerceBoolean( this.config[v] );
@@ -1457,6 +1459,7 @@ loadConfig: function () {
                            }),
                 deferred.reject
               );
+
     });
 },
 
@@ -1477,8 +1480,6 @@ _addTrackConfigs: function( /**Array*/ configs ) {
         //     console.warn("track with label "+conf.label+" already exists, skipping");
         //     return;
         // }
-
-        this.trackConfigsByName[conf.label] = conf;
         this.config.tracks.push( conf );
 
     },this);
@@ -1653,6 +1654,7 @@ onFineMove: function(startbp, endbp) {
  * Asynchronously initialize our track metadata.
  */
 initTrackMetadata: function( callback ) {
+
     return this._milestoneFunction( 'initTrackMetadata', function( deferred ) {
         var metaDataSourceClasses = dojo.map(
                                     (this.config.trackMetadata||{}).sources || [],
@@ -1689,7 +1691,6 @@ initTrackMetadata: function( callback ) {
                                          metadataStores: mdStores
                                      })
                      );
-
                      deferred.resolve({success:true});
         }));
     });
@@ -1700,6 +1701,7 @@ initTrackMetadata: function( callback ) {
  * @private
  */
 createTrackList: function() {
+
     return this._milestoneFunction('createTrack', function( deferred ) {
         // find the tracklist class to use
         var tl_class = !this.config.show_tracklist           ? 'Null'                         :
@@ -1722,7 +1724,6 @@ createTrackList: function() {
                              }
                          )
                      );
-
                      // bind the 't' key as a global keyboard shortcut
                      this.setGlobalKeyboardShortcut( 't', this.trackListView, 'toggle' );
 
@@ -1733,7 +1734,7 @@ createTrackList: function() {
                                       this.view.visibleTrackNames().join(','),
                                       {expires: 60});
                      }));
-
+		     
                      deferred.resolve({ success: true });
         }));
     });
