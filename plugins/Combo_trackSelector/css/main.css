@@ -123,10 +123,10 @@
 
 #faceted_tracksel .faceted_tracksel_on_off.tab {
     position: absolute;
-    top: 10em;
+    top: 7em;
     left: 100%;
-    z-index: 5;
-
+    z-index: 2;
+    margin-left: 2px;
     padding: 5px 0px;
     white-space: nowrap;
 
@@ -136,14 +136,29 @@
     -webkit-box-shadow: 4px 4px 10px 2px rgba( 80, 80, 80, 0.3 );
     box-shadow: 4px 4px 10px 2px rgba( 80, 80, 80, 0.3 );
 }
+
+#faceted_tracksel .faceted_track_header {
+    position: absolute;
+    top: 5em;
+    left: 100%;
+    background: #E3E3E3;
+    border: 1px solid #bfbfbf;
+    padding: 3px 3px 3px 3px;
+    margin-left: 2px;
+    white-space: nowrap;
+}
+
 #faceted_tracksel div.faceted_tracksel_on_off.tab > * {
     display: inline-block;
     vertical-align: middle;
     padding: 0 6px;
+    z-index: 1;
 }
 .tundra #faceted_tracksel .faceted_tracksel_on_off.tab {
-    background: #e9e9e9 url("src/dijit/themes/tundra/images/titleBar.png") top repeat-x;
-    border: 2px solid #666;
+    /*background: #e9e9e9 url("src/dijit/themes/tundra/images/titleBar.png") top repeat-x;*/
+    /*background: #FFFFFF url("src/dijit/themes/tundra/images/titleBar.png") top repeat-x;*/
+    background: #FFFFFF;
+    border: 1px solid #666;
 
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -268,4 +283,8 @@
 /* style the 'empty' and similar messages that show up in the grid master pane */
 #faceted_tracksel .dojoxGridMasterMessages {
     font-size: 16px;
+}
+
+.jbrowseHierarchicalTrackSelector > .header > .textfilterContainer {
+    padding: 0 5px 80px 5px;
 }

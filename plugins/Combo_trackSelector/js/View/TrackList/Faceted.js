@@ -183,14 +183,29 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
         },
         document.body );
 
-        // make the tab that turns the selector on and off
+        this.dataGrid = this.renderGrid();
+        var NumFacetedTracks = this.dataGrid.store.getCount();
+
         dojo.create('div',
                     {
-                        className: 'faceted_tracksel_on_off tab',
-                        innerHTML: '<img src="'+this.browser.resolveUrl('img/left_arrow.png')+'"><div>Select<br>tracks!</div>'
+                        className: 'faceted_track_header',
+                        innerHTML: '<div>Tracks Available in Faceted List</div>'
                     },
                     this.containerElem
                    );
+
+	var titles = this.newconfig.title;
+	var title_list = titles.join("<br>");
+
+        // make the tab that turns the selector on and off
+	           dojo.create('div',
+                    {
+                        className: 'faceted_tracksel_on_off tab',
+                        innerHTML: '</div><img src="'+this.browser.resolveUrl('plugins/Combo_trackSelector/img/faceted_icon.png')+'"><div>'+title_list+' '+NumFacetedTracks+'</div><img src="'+this.browser.resolveUrl('plugins/Combo_trackSelector/img/blue_arrow_right.png')+'">'
+                    },
+                    this.containerElem
+                   );
+
         this.mainContainer = new dijit.layout.BorderContainer(
             { design: 'headline', gutters: false },
             dojo.create('div',{ className: 'mainContainer' }, this.containerElem)
@@ -289,7 +304,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
         facetContainer.set('region','left');
         this.mainContainer.addChild( facetContainer );
 
-        this.dataGrid = this.renderGrid();
+        //this.dataGrid = this.renderGrid();
         this.dataGrid.set('region','center');
         this.centerPane.addChild( this.dataGrid );
 
@@ -768,6 +783,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
      */
     _updateMatchCount: function() {
         var count = this.dataGrid.store.getCount();
+
         dojo.query( '.matching_record_count', this.containerElem )
             .forEach( function(n) {
                           n.innerHTML =

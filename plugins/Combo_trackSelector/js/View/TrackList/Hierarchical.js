@@ -73,7 +73,7 @@ return declare(
         dom.create(
             'h2',
             { className: 'title',
-              innerHTML: 'Available Tracks Test'
+              innerHTML: 'Available Tracks'
             },
             topPane.containerNode );
 
