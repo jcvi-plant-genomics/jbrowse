@@ -23,9 +23,14 @@ return declare( InfoDialog, {
     _makeDefaultContent: function() {
         return    ''
                 + '<div class="help_dialog">'
-                + '<div class="main" style="float: left; width: 49%;">'
+                + '<div class="main" style="float: left; width: 79%;">'
 
                 + '<dl>'
+                + '<dt>Introduction</dt>'
+                + '<dd><ul>'
+	        + '    <li>JBrowse has a double pane interface, with the track list on the left side and the track display on the right. The navigation and search features are all located at the top right below the menu bar.</li>'
+                + '</ul></dd>'
+	        + '<img src="img/jbrowse_intro.png" height="420px">'
                 + '<dt>Moving</dt>'
                 + '<dd><ul>'
                 + '    <li>Move the view by clicking and dragging in the track area, or by clicking <img class="icon nav" id="moveLeftSmall" src="'+this.browser.resolveUrl('img/Empty.png')+'">  or <img class="icon nav" id="moveRightSmall" src="'+this.browser.resolveUrl('img/Empty.png')+'"> in the navigation bar, or by pressing the left and right arrow keys.</li>'
@@ -36,21 +41,39 @@ return declare( InfoDialog, {
                 + '    <li>Zoom in and out by clicking <img class="icon nav" id="zoomInSmall" src="'+this.browser.resolveUrl('img/Empty.png')+'"> or <img class="icon nav" id="zoomOutSmall" src="'+this.browser.resolveUrl('img/Empty.png')+'"> in the navigation bar, or by pressing the up and down arrow keys while holding down "shift".</li>'
                 + '    <li>Select a region and zoom to it ("rubber-band" zoom) by clicking and dragging in the overview or track scale bar, or shift-clicking and dragging in the track area.</li>'
                 + '    </ul>'
+	        + '<img src="img/rubberband_zoom.png" height="100px">'
                 + '</dd>'
                 + '<dt>Showing Tracks</dt>'
-                + '<dd><ul><li>Turn a track on by dragging its track label from the "Available Tracks" area into the genome area, or double-clicking it.</li>'
-                + '        <li>Turn a track off by dragging its track label from the genome area back into the "Available Tracks" area.</li>'
+                + '<dd><ul><li>Turn a track on by checking its box.</li>'
+                + '        <li>Turn a track off by selecting the "X" button on the track header.</li>'
                 + '    </ul>'
+	        + '<img src="img/displaying_track.png" height="250px">'
                 + '</dd>'
-                + '</dl>'
-                + '</div>'
+                + '<dt>Track Lists</dt>'
+                + '<dd><ul><li>The hierarchical track list displays tracks arranged into various categories and sub-categories. </li>'
+              + '    </ul>'
+	        + '<img src="img/track_types.png" height="300px">'
+                + '</dd>'
+                + '<dt>Faceted Track Displayer</dt>'
+                + '<dd><ul><li>In addition to the tracks available within the hierarchical menu, additional tracks are available through the faceted track displayer. </li>'
+	        + '    <li>The comprehensive list of metadata are available on the left hand side and is searchable. The data displayed within the columns are only a subset.</li>'
+                + '    </ul>'
+	        + '<img src="img/jbrowse_faceted_help.jpg">'
+                + '</dd>'	
 
-                + '<div class="main" style="float: right; width: 49%;">'
+
+                + '</dl>'
+
+
+
                 + '<dl>'
                 + '<dt>Searching</dt>'
                 + '<dd><ul>'
                 + '    <li>Jump to a feature or reference sequence by typing its name in the location box and pressing Enter.</li>'
                 + '    <li>Jump to a specific region by typing the region into the location box as: <span class="example">ref:start..end</span>.</li>'
+	        + '<img src="img/search_by_position.png" height="150px">'
+	        + '   <li>You can also search by locus id and annotation features such as gene symbol and protein name.</li>'
+	        + '<img src="img/search_by_other.png" height="300px">'
                 + '    </ul>'
                 + '</dd>'
                 + '<dt>Example Searches</dt>'
@@ -71,7 +94,7 @@ return declare( InfoDialog, {
                 + '</dd>'
                 + '</dl>'
                 + '</div>'
-                + '</div>'
+
             ;
     }
 });

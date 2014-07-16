@@ -201,7 +201,7 @@ return declare( 'JBrowse.View.TrackList.Faceted', null,
 	           dojo.create('div',
                     {
                         className: 'faceted_tracksel_on_off tab',
-                        innerHTML: '</div><img src="'+this.browser.resolveUrl('plugins/Combo_trackSelector/img/faceted_icon.png')+'"><div>'+title_list+' '+NumFacetedTracks+'</div><img src="'+this.browser.resolveUrl('plugins/Combo_trackSelector/img/blue_arrow_right.png')+'">'
+                        innerHTML: '</div><img src="'+this.browser.resolveUrl('plugins/Combo_trackSelector/img/faceted_icon.png')+'"><div>'+title_list+' '+NumFacetedTracks+'</div><img src="'+this.browser.resolveUrl('plugins/Combo_trackSelector/img/green_right_arrow.png')+'">'
                     },
                     this.containerElem
                    );

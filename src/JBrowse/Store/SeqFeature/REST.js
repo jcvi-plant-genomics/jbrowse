@@ -2,7 +2,7 @@
  * Store that gets data from any set of web services that implement
  * the JBrowse REST API.
  */
-define([
+define("JBrowse/Store/SeqFeature/REST", [
            'dojo/_base/declare',
            'dojo/_base/lang',
            'dojo/_base/array',
@@ -289,6 +289,12 @@ return declare( SeqFeatureStore,
 
         if( query ) {
             if( query.ref ) {
+		
+		//msarmien 04092014; accomodate CoGe nomenclature for reference id
+		if (this.baseUrl.match(/coge/)) {
+		    query.ref = query.ref.replace("Chr","");
+		}
+
                 url += '/' + query.ref;
                 query = lang.mixin({}, query );
                 delete query.ref;
@@ -298,7 +304,6 @@ return declare( SeqFeatureStore,
             if( query )
                 url += '?' + query;
         }
-
         return url;
     },
 
