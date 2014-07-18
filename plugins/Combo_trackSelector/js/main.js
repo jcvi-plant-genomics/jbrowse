@@ -57,7 +57,7 @@ return declare( JBrowsePlugin,
 		 this.browser.onResize();
 
     		 // make our global keyboard shortcut handler
-		 on( document.body, 'keypress', dojo.hitch( this, 'globalKeyHandler' ));
+		 //on( document.body, 'keypress', dojo.hitch( this, 'globalKeyHandler' ));
 
 
 		}));

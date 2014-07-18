@@ -1,6 +1,6 @@
 /* Dojo and Dijit stuff */
 
-@import url("src/dojox/grid/resources/tundraGrid.css");
+/*@import url("../../../src/dijit/themes/tundra/tundra.css");*/
 
 .dojoxGrid table {
   margin: 0;
@@ -271,7 +271,7 @@
 
 /* styling specifically for the title of the first facet title, which is 'My Tracks' */
 .tundra #faceted_tracksel .myTracks .facetTitle:after {
-    content: url("src/dijit/themes/tundra/images/circleIcon.png");
+    content: url("../../../src/dijit/themes/tundra/images/circleIcon.png");
     margin-left: 7px;
 }
 #faceted_tracksel .myTracks .facetTitle {
