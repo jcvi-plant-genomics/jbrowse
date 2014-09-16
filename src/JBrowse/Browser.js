@@ -155,12 +155,12 @@ constructor: function(params) {
 
                            // figure out what initial track list we will use:
                            var tracksToShow = [];
-                           // always add alwaysOnTracks, regardless of any other track params                   
+                           // always add alwaysOnTracks, regardless of any other track params
                            if (thisB.config.alwaysOnTracks) { tracksToShow = tracksToShow.concat(thisB.config.alwaysOnTracks.split(",")); }
-                           // add tracks specified in URL track param, 
+                           // add tracks specified in URL track param,
                            //    if no URL track param then add last viewed tracks via tracks cookie
-                           //    if no URL param and no tracks cookie, then use defaultTracks 
-                           if (thisB.config.forceTracks)   { tracksToShow = tracksToShow.concat(thisB.config.forceTracks.split(",")); } 
+                           //    if no URL param and no tracks cookie, then use defaultTracks
+                           if (thisB.config.forceTracks)   { tracksToShow = tracksToShow.concat(thisB.config.forceTracks.split(",")); }
                            else if (thisB.cookie("tracks")) { tracksToShow = tracksToShow.concat(thisB.cookie("tracks").split(",")); }
                            else if (thisB.config.defaultTracks) { tracksToShow = tracksToShow.concat(thisB.config.defaultTracks.split(",")); }
                            // currently, force "DNA" _only_ if no other guides as to what to show?
@@ -585,10 +585,8 @@ initView: function() {
                 console.warn("In JBrowse configuration, datasets specified, but dataset_id not set.  Dataset selector will not be shown.");
             }
             if( this.config.datasets && this.config.dataset_id ) {
-		//msarmien 07092014; add logo and new header without drop down
-		this.renderDataHeader( menuBar);
-		
-                //this.renderDatasetSelect( menuBar );
+
+                this.renderDatasetSelect( menuBar );
 
             } else {
 
@@ -604,7 +602,7 @@ initView: function() {
             this.addGlobalMenuItem( 'file',
                                     new dijitMenuItem(
                                         {
-                                            id: 'menubar_fileopen', 
+                                            id: 'menubar_fileopen',
                                             label: 'Open',
                                             iconClass: 'dijitIconFolderOpen',
                                             onClick: dojo.hitch( this, 'openFileDialog' )
@@ -615,7 +613,7 @@ initView: function() {
 
             this.addGlobalMenuItem( 'file', new dijitMenuItem(
                 {
-                    id: 'menubar_combotrack', 
+                    id: 'menubar_combotrack',
                     label: 'Add combination track',
                     iconClass: 'dijitIconSample',
                     onClick: dojo.hitch(this, 'createCombinationTrack')
@@ -625,7 +623,7 @@ initView: function() {
 
             // make the view menu
             this.addGlobalMenuItem( 'view', new dijitMenuItem({
-                id: 'menubar_sethighlight', 
+                id: 'menubar_sethighlight',
                 label: 'Set highlight',
                 iconClass: 'dijitIconFilter',
                 onClick: function() {
@@ -690,7 +688,7 @@ initView: function() {
             this.addGlobalMenuItem( 'help',
                                     new dijitMenuItem(
                                         {
-                                            id: 'menubar_about', 
+                                            id: 'menubar_about',
                                             label: 'About',
                                             //iconClass: 'dijitIconFolderOpen',
                                             onClick: dojo.hitch( aboutDialog, 'show' )
@@ -704,7 +702,7 @@ initView: function() {
             this.addGlobalMenuItem( 'help',
                                     new dijitMenuItem(
                                         {
-                                            id: 'menubar_generalhelp', 
+                                            id: 'menubar_generalhelp',
                                             label: 'General',
                                             iconClass: 'jbrowseIconHelp',
                                             onClick: showHelp
@@ -816,8 +814,7 @@ createCombinationTrack: function() {
     });
 },
 
-
-renderDataHeader: function ( parent) {
+renderDatasetSelect: function( parent ) {
     var dsconfig = this.config.datasets || {};
     var datasetChoices = [];
     for( var id in dsconfig ) {
@@ -825,34 +822,14 @@ renderDataHeader: function ( parent) {
             datasetChoices.push( dojo.mixin({ id: id }, dsconfig[id] ) );
     }
 
-
-    var currdataset = this.config.dataset_id;
-    var logo_img = dsconfig[currdataset].logo;
-    var logo_url = dsconfig[currdataset].logourl;
-    var projectHeader = dsconfig[currdataset].name;
-    var projectUrl = dsconfig[currdataset].url;
-
-    dojo.create('a', {
-        className: 'powered_by',
-        innerHTML: logo_img,
-        title: dsconfig[currdataset].logotitle,
-	href: logo_url
-    }, parent );
-
-    dojo.create('a', {
-        className: 'powered_by',
-        innerHTML: projectHeader,
-	href: projectUrl
-    }, parent );
-},
-
-
-renderDatasetSelect: function( parent ) {
-    var dsconfig = this.config.datasets || {};
-    var datasetChoices = [];
-    for( var id in dsconfig ) {
-        if( ! /^_/.test(id) )
-            datasetChoices.push( dojo.mixin({ id: id }, dsconfig[id] ) );
+    if (this.config.projectHome) {
+        var projectHome = this.config.projectHome;
+        dojo.create('a', {
+            className: 'powered_by',
+            innerHTML: projectHome['logo'],
+            title: projectHome['title'],
+            href: projectHome['href']
+        }, parent );
     }
 
     new dijitSelectBox(
@@ -2513,7 +2490,7 @@ createNavBox: function( parent ) {
                 var h = thisB.getHighlight();
                 if( h ) {
                     thisB.clearHighlight();
-                    thisB.view.redrawRegion( h ); 
+                    thisB.view.redrawRegion( h );
                 }
             }
             else { // mixed
