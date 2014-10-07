@@ -30,7 +30,7 @@ function SequenceViewer( track,feature,div){
     }else{
 	dir = "reverse";
     }
-    
+
     var container = container || dojo.create('div', { className: 'sequenceViewerContainer', innerHTML: '' } );
     var title_container = dojo.create('div', { className: 'sequenceViewer_header', innerHTML: '<img src="img/seqlighter_logo.png" height="35px">'}, container );
     var user_guide = dojo.create('div', { className: 'sequenceViewer_helpguide', innerHTML: '<a href="docs/SeqLighter_v1.0_UserGuide.pdf"><img src="img/qmark.jpg">&nbsp;User Guideline</a>'}, title_container );
@@ -59,7 +59,7 @@ function SequenceViewer( track,feature,div){
 	    var start_coord = subfeatures[i].get('start');
 	    var end_coord = subfeatures[i].get('end');
 	    
-	    exonArray[exon_i] = {'start':start_coord,'end':end_coord};
+	    exonArray[exon_i] = {'start': start_coord, 'end': end_coord, 'strand':strand};
 	    exon_i++;	
 	}
 
@@ -86,7 +86,7 @@ function SequenceViewer( track,feature,div){
 	    var start_coord = subfeatures[i].get('start');
 	    var end_coord = subfeatures[i].get('end');
 
-	    utrArray[utr_i] = {'start': start_coord, 'end': end_coord, 'strand': strand};
+	    utrArray[utr_i] = {'start': start_coord, 'end': end_coord, 'strand':strand};
 	    utr_i++;
 	}
     }
@@ -105,9 +105,9 @@ function SequenceViewer( track,feature,div){
 	    var nextend_coord = exonArray[i+1].end;
 	    
 	    if(strand == 1){
-		intronArray[intron_i] = {'start':end_coord,'end':nextstart_coord};
+		intronArray[intron_i] = {'start':end_coord,'end':nextstart_coord, 'strand':strand};
 	    }else{
-		intronArray[intron_i] = {'start':end_coord,'end':nextstart_coord};
+		intronArray[intron_i] = {'start':end_coord,'end':nextstart_coord, 'strand':strand};
 	    }
 	    intron_i++;
 	}
@@ -138,10 +138,12 @@ function sortArray(unsortedArray) {
     var sortedArray = [];
     var keyArray = [];
     var tmpArray = [];
+    var strand = 1;
 
     for (var i = 0; i < unsortedArray.length; i++) {	
 	var start_coord = unsortedArray[i].start;
 	var end_coord = unsortedArray[i].end;
+	strand = unsortedArray[i].strand;
 
 	tmpArray.push(start_coord);
 	keyArray[start_coord]=end_coord;
@@ -152,7 +154,7 @@ function sortArray(unsortedArray) {
 
 	var start_coord = tmpArray[i];
 	var end_coord = keyArray[start_coord];
-	sortedArray[i] = {'start':start_coord,'end':end_coord};
+	sortedArray[i] = {'start':start_coord,'end':end_coord, 'strand':strand};
     }
     
     return sortedArray;
@@ -245,7 +247,7 @@ function testDisplay(track,feature,exonArray,intronArray,cdsArray,utrArray,legen
 
 		    highlightExons(BioJsObject,legend_container,exonArray,utrArray,start_coord,end_coord,targetSeq);
 		    highlightUtrs(BioJsObject,legend_container,utrArray,start_coord,end_coord,targetSeq);
-		    highlightIntrons(BioJsObject,legend_container,intronArray,start_coord,targetSeq);
+		    highlightIntrons(BioJsObject,legend_container,intronArray,start_coord,end_coord,targetSeq);
 		    reverseComplement(BioJsObject,legend_container,targetSeq,revseq);
 		    annotateStartStop(BioJsObject,legend_container,targetSeq.length,start_seq,end_seq);
 		    resetSequence(BioJsObject,legend_container,seq,targetSeqLen,exonArray,intronArray,utrArray,start_coord,end_coord,targetSeq,strand);
@@ -495,7 +497,7 @@ function resetSequence(BioJsObject,legend_container,seq,targetSeqLen,exonArray,i
 
 	//update button values for addition of flanking region
 	highlightExons_flanking( BioJsObject, legend_container, exonArray, utrArray,start_coord, end_coord, newSeq, bufferValue);
-	highlightIntrons_flanking( BioJsObject, legend_container, intronArray, start_coord, newSeq, bufferValue);
+	highlightIntrons_flanking( BioJsObject, legend_container, intronArray, start_coord, end_coord, newSeq, bufferValue);
 	highlightUtrs_flanking( BioJsObject, legend_container, utrArray, start_coord, end_coord, newSeq, bufferValue);
 	annotateStartStop_flanking( BioJsObject, legend_container, newSeq, strand);
 
@@ -563,7 +565,7 @@ function highlightUtrs(BioJsObject,legend_container,utrArray,featStart,featEnd,t
 		
 		    var adjusted_start = 0;
 		    var adjusted_end = 0;
-		    
+
 		    if(utrArray[i].strand == 1){
 
 			adjusted_start = utrArray[i].start - featStart + 1;
@@ -657,8 +659,17 @@ function highlightExons(BioJsObject,legend_container,exonArray,utrArray,featStar
 		}		
 
 		for (var i = 0; i < exonArray.length; i++) {
-		    var adjusted_start = exonArray[i].start - featStart + 1;
-		    var adjusted_end = exonArray[i].end - featStart;
+
+		    var adjusted_start = 0;
+		    var adjusted_end = 0;
+
+		    if(exonArray[i].strand == 1) {
+			adjusted_start = exonArray[i].start - featStart + 1;
+			adjusted_end = exonArray[i].end - featStart;
+		    }else{
+			adjusted_start = (featEnd - featStart) - (exonArray[i].end - featStart) + 1;
+			adjusted_end = (featEnd - featStart) - (exonArray[i].start - featStart);
+		    }
 
 		    BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#5CBEFF", "id": "exon"+i } )
 		}
@@ -723,8 +734,17 @@ function highlightExons_flanking(BioJsObject,legend_container,exonArray,utrArray
 		}	
 
 		for (var i = 0; i < exonArray.length; i++) {
-		    var adjusted_start =  (exonArray[i].start - featStart + 1) + Number(bufferValue);
-		    var adjusted_end = (exonArray[i].end - featStart) + Number(bufferValue);
+
+		    var adjusted_start = 0;
+		    var adjusted_end = 0;
+
+		    if(exonArray[i].strand == 1) {
+			adjusted_start = exonArray[i].start - featStart + 1 + Number(bufferValue);
+			adjusted_end = exonArray[i].end - featStart + Number(bufferValue) ;
+		    }else{
+			adjusted_start = (featEnd - featStart) - (exonArray[i].end - featStart) + 1 + Number(bufferValue);
+			adjusted_end = (featEnd - featStart) - (exonArray[i].start - featStart) + Number(bufferValue);
+		    }
 
 		    BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#5CBEFF", "id": "exon"+i } )
 		}
@@ -770,7 +790,7 @@ function highlightExons_flanking(BioJsObject,legend_container,exonArray,utrArray
  * @param {String} 
  * @returns {String} 
  */
-function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,targetSeq){
+function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,featEnd,targetSeq){
 
     var showIntronButton = new dijit.form.ToggleButton({
 	checked: false,
@@ -782,8 +802,20 @@ function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,tar
 	    if(dijit.byId("highlightIntrons").checked){    
 
 		for (var i = 0; i < intronArray.length; i++) {
-		    var adjusted_start = intronArray[i].start - featStart + 1;
-		    var adjusted_end = intronArray[i].end - featStart;
+
+		    var adjusted_start = 0;
+		    var adjusted_end = 0;
+
+		    if(intronArray[i].strand == 1){
+			
+			adjusted_start = intronArray[i].start - featStart + 1;
+			adjusted_end = intronArray[i].end - featStart;
+			
+		    }else{
+			
+			adjusted_start = (featEnd - featStart) - (intronArray[i].end - featStart) + 1;
+			adjusted_end = (featEnd - featStart) - (intronArray[i].start - featStart);
+		    }
 
 		    BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#B1D864", "id": "intron"+i } );
 		}
@@ -804,7 +836,7 @@ function highlightIntrons(BioJsObject,legend_container,intronArray,featStart,tar
  * @param {String} 
  * @returns {String} 
  */
-function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,featStart,newSeq,bufferValue,newid_flanking){
+function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,featStart,featEnd,newSeq,bufferValue,newid_flanking){
 
      dijit.byId('highlightIntrons').attr('onClick', function(){    
 	    var IDS = new Array();
@@ -812,8 +844,21 @@ function highlightIntrons_flanking(BioJsObject,legend_container,intronArray,feat
 	    if(dijit.byId("highlightIntrons").checked){    
 
 		for (var i = 0; i < intronArray.length; i++) {
-		    var adjusted_start = intronArray[i].start - featStart + 1 + Number(bufferValue);
-		    var adjusted_end = intronArray[i].end - featStart + Number(bufferValue);
+
+		    var adjusted_start;
+		    var adjusted_end;
+
+		    if(intronArray[i].strand == 1){
+			
+			adjusted_start = intronArray[i].start - featStart + 1 + Number(bufferValue);
+			adjusted_end = intronArray[i].end - featStart + Number(bufferValue);
+			
+		    }else{
+			
+			adjusted_start = (featEnd - featStart) - (intronArray[i].end - featStart) + 1 + Number(bufferValue);
+			adjusted_end = (featEnd - featStart) - (intronArray[i].start - featStart) + Number(bufferValue);
+		    }
+
 		    BioJsObject.addHighlight( { "start": adjusted_start, "end": adjusted_end, "color": "white", "background": "#B1D864", "id": "intron"+i } );
 		}
 	    }
