@@ -841,7 +841,7 @@ function annotateStartStop( BioJsObject,legend_container,seqlen,start_seq,end_se
     window.start_beg = start_beg;
     window.start_end = start_end;
     window.stop_beg = stop_beg;
-    window.stop_end = stop.end;
+    window.stop_end = stop_end;
 
     var showStartStopButton = new dijit.form.ToggleButton({
 	checked: false,
@@ -887,7 +887,7 @@ function annotateStartStop_flanking( BioJsObject,legend_container,newSeq,strand)
     window.start_beg = start_beg;
     window.start_end = start_end;
     window.stop_beg = stop_beg;
-    window.stop_end = stop.end;
+    window.stop_end = stop_end;
     
     start_seq = newSeq.substr(window.adjusted_start_5prime,3);		   
     end_seq = newSeq.substr(window.adjusted_end_3prime,3);	
