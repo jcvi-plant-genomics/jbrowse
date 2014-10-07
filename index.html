@@ -7,9 +7,24 @@
     <script type="text/javascript" src="src/dojo/dojo.js" data-dojo-config="async: 1, baseUrl: './src'"></script>
     <script type="text/javascript" src="src/JBrowse/init.js"></script>
 
+    <script language="JavaScript" type="text/javascript" src="src/biojs/src/main/javascript/Biojs.js">
+    <script language="JavaScript" type="text/javascript" src="src/biojs/src/main/javascript/Biojs.Tooltip.js"></script>
+    <script language="JavaScript" type="text/javascript" src="src/biojs/src/main/javascript/Biojs.Sequence.js"></script>
+    <script language="JavaScript" type="text/javascript" src="src/biojs/src/main/resources/dependencies/jquery/jquery-1.4.2.min.js">
+    <script language="JavaScript" type="text/javascript" src="src/biojs/src/main/resources/dependencies/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+    <script type="text/javascript" src="src/JBrowse/SequenceViewer.js"></script>
+
+
     <script type="text/javascript">
 
-      
+      function flankingText(){
+      alert("Add selected number of bases upstream and downstream of the gene model.");
+      }
+
+      function DownloadText(){
+      alert("The sequence format for the downloaded image will be in CODATA format only.\nFor other sequence formats, please use copy and paste method.\nDownload option may not function properly with the Safari Browser, so please use an alternative browser.");
+      }
+
       function showBox(text, obj) {
       helpNode = document.createElement('div');
       helpNode.id = 'popBox';
