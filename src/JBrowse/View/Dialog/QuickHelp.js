@@ -82,7 +82,7 @@ return declare( InfoDialog, {
                 + '</dd>'
                 + '<dt>SeqLighter v1.0</dt>'
                 + '<dd><ul>'
-	        + '   <li>To launch the sequence viewer, right click a gene model on the ‘Protein Coding Gene Models’ track. Select SeqLighter v1.0 on the dropdown menu.</li>'
+	        + '   <li>To launch the sequence viewer, right click a gene model on the ‘Protein Coding Gene Models’ track. Select View Sequence on the dropdown menu.</li>'
 	        + '<img src="img/seqlighter_image1.png" height="200px">'
 	        + '   <li>This will launch a popup screen displaying the nucleotide sequence of the selected gene model. The default format is in CODATA and there are other sequence formats such as FASTA, PRIDE, and RAW to choose from.</li>'
 	        + '<img src="img/seqlighter_image2.png" height="250px"><br />'

@@ -33,7 +33,7 @@ function SequenceViewer( track,feature,div){
     
     var container = container || dojo.create('div', { className: 'sequenceViewerContainer', innerHTML: '' } );
     var title_container = dojo.create('div', { className: 'sequenceViewer_header', innerHTML: '<img src="img/seqlighter_logo.png" height="35px">'}, container );
-    var user_guide = dojo.create('div', { className: 'sequenceViewer_helpguide', innerHTML: '<a href="docs/SeqLighter_v.0_UserGuide.pdf"><img src="img/qmark.jpg">&nbsp;User Guideline</a>'}, title_container );
+    var user_guide = dojo.create('div', { className: 'sequenceViewer_helpguide', innerHTML: '<a href="docs/SeqLighter_v1.0_UserGuide.pdf"><img src="img/qmark.jpg">&nbsp;User Guideline</a>'}, title_container );
     var field_container = dojo.create('div', { className: 'sequenceViewer_topFields' }, container );
     var table_container = dojo.create('div', { className: 'sequenceViewer_tableContainer'}, field_container );
     var metaTable = dojo.create('table', { className: 'field_metadata_table'}, table_container );
