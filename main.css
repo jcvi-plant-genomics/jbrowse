@@ -5,7 +5,6 @@ html, body {
     border: 0;
     font-size: 12px;
     font-family: Univers,Trebuchet MS,Helvetica,Arial,sans-serif;
-    overflow: hidden;
 }
 
 
@@ -366,7 +365,7 @@ div#static_track {
 div.gridline {
     position: absolute;
     left: 0px;
-    top: 0px
+    top: 0px;
     width: 0px;
     height: 100%;
     border-style: none none none solid;

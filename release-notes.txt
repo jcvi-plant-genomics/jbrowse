@@ -2,6 +2,67 @@
 
 ## Minor improvements
 
+ * Added the ability to disable sorting on the Hierarchical track
+   selector using the sortHierarchical flag. Thanks to Chris Childers
+   for the suggestion and Colin Diesh for the implementation
+   (issue #477).
+
+ * Added saving of the display mode setting on the CanvasFeature based
+   tracks. Thanks to Jon Hinton for the idea and Colin Diesh for the
+   fix (issue #469).
+
+ * Added configurable click event handlers for Wiggle type tracks.
+   Thanks to Richard Hayes for implementing this feature (issue #489).
+
+ * Added more configuration options for 'View details' popups as well
+   as the ability to customize the 'About track' popups. Thanks to
+   Colin Diesh for the idea and implementation (issue #494).
+
+ * Added the ability to load the category attribute from trackMetaData
+   files to be used for the Hierarchical track selector.
+
+ * Added the ability to specify initially collapsed categories in the
+   Hierarchical track selector (issue #507).
+
+ * Added beta touch-screen and tablet support by fixing a related bug.
+   Thanks to Paul Hale and Kieran Raine for reporting bugs and to
+   Emily Greenfest-Allen for the suggested fix (issue #505).
+
+## Bug fixes
+
+ * Fixed a bug with VCF tabix file parsing that caused unnecessary
+   chunkSizeLimit errors. Thanks to Richard Hayes for finding and
+   debugging this issue (issue #486)!
+
+ * Fixed a bug where the Variant popup boxes would not display 
+   complete genotype information in previous 1.11.* versions.
+   Thanks to Nando for reporting the bug and Colin Diesh for the
+   bugfix (issue #488).
+ 
+ * Fixed a small error that occured when using variant type tracks
+   with the REST API.
+
+ * Added a bugfix that caused problems scrolling in dialog boxes
+   for variant type tracks in 1.11.4 (issue #492).
+
+ * Fixed the use of the --refs flag on prepare-refseqs.pl. Thanks to
+   Audrey for finding & fixing this bug (issue #497).
+
+ * Added missing template length flag to the Alignments popup dialogs.
+   Thanks to Kieran Raine for the suggestion and Colin Diesh for the
+   fix (issue #471).
+
+ * Fixed the functionality of the --incremental flag in the
+   generate-names.pl script. Thanks to Richard Hayes and Colin Diesh
+   fixing the issue (issue #478).
+
+ * Fixed legacy bam-to-json.pl support when running setup.sh due to
+   samtools build modifications (issue #501).
+
+# Release 1.11.4     2014-05-14 12:04:54 America/Chicago
+
+## Minor improvements
+
  * Added high-resolution rendering for CanvasFeatures, SNPCoverage,
    BigWig tracks, and histograms. This allows rendering for canvas-
    based tracks to look much sharper on high-resolution displays and
