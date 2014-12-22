@@ -33,32 +33,33 @@ define([
 return declare( JBrowsePlugin,
 {
     constructor: function( args ) {
-	console.log("Loaded Combo_trackSelector plugin");
-	var thisB = this;	    
+	console.log("Loaded ComboTrackSelector plugin");
+	var thisB = this;
 
 	//Load additional track config
 	var c = new ConfigManager({ bootConfig: thisB.config2, defaults: thisB._configDefaults(), browser: thisB });
 	c.getFinalConfig()
 	.then( dojo.hitch(thisB, function( finishedConfig2 ) {
 	    thisB.config2 = finishedConfig2;
-	    
+
 	}));
 
-          this.browser.afterMilestone( 'loadRefSeqs', dojo.hitch( this, function() {
+         this.browser.afterMilestone( 'loadRefSeqs', dojo.hitch( this, function() {
 
 		 thisB.createNewTrackList(thisB.config2).then( lang.hitch( this, function() {
 
 		 thisB.initTrackMetadata( thisB.config2 );
 		 thisB._addTrackConfigs( thisB.config2 );
 
-		 this.browser.view.browser.config.stores=dojo.mixin(this.browser.view.browser.config.stores,thisB.config2.stores);
+		 this.browser.config.stores = dojo.mixin(this.browser.config.stores, thisB.config2.stores);
+         this.browser.config.tracks = dojo.mixin(this.browser.config.tracks, thisB.config2.tracks);
+         this.browser.trackConfigsByName = dojo.mixin(this.browser.trackConfigsByName, thisB.trackConfigsByName);
 
 		 this.browser.containerWidget.startup();
 		 this.browser.onResize();
 
     		 // make our global keyboard shortcut handler
 		 //on( document.body, 'keypress', dojo.hitch( this, 'globalKeyHandler' ));
-
 
 		}));
 
@@ -78,15 +79,11 @@ createNewTrackList: function(newconfig) {
 
     return this.browser._milestoneFunction('createTrack', function( deferred ) {
         // find the tracklist class to use
-        //var tl_class = !this.config.show_tracklist           ? 'Null'                         :
-                       //(this.config.trackSelector||{}).type  ? this.config.trackSelector.type :
-                                                               //'Hierarchical';
-        //if( ! /\//.test( tl_class ) )
-            //tl_class = 'JBrowse/View/TrackList/'+tl_class;
-	
-	var tl_class = 'Combo_trackSelector/View/TrackList/Faceted';
-	
-	
+        var tl_class = !this.config.show_tracklist ? 'Null' : 'Faceted';
+
+        if( ! /\//.test( tl_class ) )
+            tl_class = 'ComboTrackSelector/View/TrackList/'+tl_class;
+
         // load all the classes we need
         require( [ tl_class ],
                  lang.hitch( this, function( trackListClass ) {
