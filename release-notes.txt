@@ -36,11 +36,11 @@
    chunkSizeLimit errors. Thanks to Richard Hayes for finding and
    debugging this issue (issue #486)!
 
- * Fixed a bug where the Variant popup boxes would not display 
+ * Fixed a bug where the Variant popup boxes would not display
    complete genotype information in previous 1.11.* versions.
    Thanks to Nando for reporting the bug and Colin Diesh for the
    bugfix (issue #488).
- 
+
  * Fixed a small error that occured when using variant type tracks
    with the REST API.
 
@@ -81,7 +81,7 @@
    menu or by using the in-memory adaptor. Big thanks to Andrew Warren
    for the contribution (issue #453).
 
- * Added a change to the highlight button to allow the user to more 
+ * Added a change to the highlight button to allow the user to more
    easily clear highlights. Thanks to Paul Hale for the suggestion
    and Colin Diesh for the fix (issue #445).
 
@@ -95,7 +95,7 @@
    original implementation and Colin Diesh for the fix (issue #461).
 
  * Changed the CanvasFeatures 'View details' pages to display the name
-   and description of features in the dialog box. Thanks to Colin 
+   and description of features in the dialog box. Thanks to Colin
    Diesh for the fix (issue #463).
 
  * Added a bugfix for non-compliant servers that add a trailing slash
@@ -181,7 +181,7 @@
    and Colin Diesh for the bugfix (issue #435)
 
  * Fixed a bug where gene features in GFF tracks would not have
-   arrowhead markers. Thanks to Colin Diesh for finding and fixing 
+   arrowhead markers. Thanks to Colin Diesh for finding and fixing
    this issue (issue #454)
 
 # Release 1.11.2     2014-02-10 19:11:33 EST5EDT
