@@ -11,7 +11,7 @@ define([
             constructor: function(args) {
 		console.log("Loaded VariantFilter plugin");
 		var browser = args.browser;
-	},
+	}
 
         });
 

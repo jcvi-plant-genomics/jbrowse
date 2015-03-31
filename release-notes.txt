@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+# Release 1.11.6     2015-03-31 12:59:59 America/New_York
+
 # Release 1.11.5     2014-12-19 16:12:09 America/New_York
 
 ## Minor improvements
