@@ -11,6 +11,7 @@
 @import url("combination_tracks.css");
 @import url("export_dialog.css");
 @import url("popup.css");
+@import url("src/dojox/grid/enhanced/resources/EnhancedGrid.css");
 
 /* CSS styles for the various types of feature glyphs */
 @import url("track_styles.css");

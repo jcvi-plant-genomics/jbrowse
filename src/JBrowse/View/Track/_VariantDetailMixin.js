@@ -224,8 +224,10 @@ return declare( [FeatureDetailMixin, NamedFeatureFiltersMixin], {
     // filters for VCF sites
     _getNamedFeatureFilters: function() {
         var thisB = this;
+
         return all([ this.store.getVCFHeader && this.store.getVCFHeader(), this.inherited(arguments) ])
             .then( function() {
+
                        if( arguments[0][0] )
                            return thisB._makeVCFFilters.apply( thisB, arguments[0] );
                        else
@@ -298,6 +300,7 @@ return declare( [FeatureDetailMixin, NamedFeatureFiltersMixin], {
     _variantsFilterTrackMenuOptions: function() {
         // add toggles for feature filters
         var track = this;
+
         return this._getNamedFeatureFilters()
             .then( function( filters ) {
 

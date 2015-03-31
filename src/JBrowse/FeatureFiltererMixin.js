@@ -58,6 +58,7 @@ return declare( null, {
             };
         else if( filterChain.length == 1 ) {
             var single = filterChain[0].filter;
+	    
             this.filterFeature = function(feat) {
                 return single.call(this,feat) && this.featureFilterParentComponent.filterFeature( feat );
             };
