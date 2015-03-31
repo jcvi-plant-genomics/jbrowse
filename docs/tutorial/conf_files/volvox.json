@@ -50,6 +50,7 @@
          "track" : "malformed_alignments",
          "class" : "feature4",
          "key" : "HTMLFeatures - Features with right-click menus",
+         "shortDescription": "Features with customized right-click menus",
          "metadata": {
              "category": "Miscellaneous",
              "Description": "Features with extensively customized right-click menus, and with their colors set at random by a JavaScript callback."
@@ -126,6 +127,11 @@
          "category": "Transcripts",
          "key" : "CanvasFeatures - Protein-coding genes",
          "trackType": "JBrowse/View/Track/CanvasFeatures",
+         "onClick" : {
+            "action" : "defaultDialog",
+            "label" : "<div style='font:normal 12px Univers,Helvetica,Arial,sans-serif'><div style='font-weight:bold'>Custom tooltip</div><div style='color:blue;'>Feature name: {name}<br />Feature start: {start}<br />Feature end: {end}</div></div>",
+            "title": "{type} {name}"
+         },
          "menuTemplate": [  {
                "label" : "View details",
              },
@@ -158,7 +164,11 @@
          "class" : "cds",
          "phase": 1,
          "key" : "HTMLFeatures - mRNAs",
-         "onClick": { "label": "search at NCBI", "url": "http://www.ncbi.nlm.nih.gov/gquery/?term={name}" }
+         "onClick": {
+            "url": "http://www.ncbi.nlm.nih.gov/gquery/?term={name}",
+            "label": "Search for {name} at NCBI\nFeature start {start}\nFeature end {end}",
+            "title": "NCBI search box"
+         }
       },
       {
          "feature" : [

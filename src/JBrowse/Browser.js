@@ -570,7 +570,9 @@ initView: function() {
             }
             );
         thisObj.menuBar = menuBar;
-        ( this.config.show_nav ? topPane : this.container ).appendChild( menuBar );
+        if( this.config.show_menu ) {
+            ( this.config.show_nav ? topPane : this.container ).appendChild( menuBar );
+        }
 
         var overview = dojo.create( 'div', { className: 'overview', id: 'overview' }, topPane );
         this.overviewDiv = overview;
@@ -1457,7 +1459,7 @@ loadConfig: function () {
                                this._addTrackConfigs( tracks );
 
                                // coerce some config keys to boolean
-                               dojo.forEach( ['show_tracklist','show_nav','show_overview'], function(v) {
+                               dojo.forEach( ['show_tracklist','show_nav','show_overview','show_menu'], function(v) {
                                                  this.config[v] = this._coerceBoolean( this.config[v] );
                                              },this);
 
@@ -1545,6 +1547,7 @@ _configDefaults: function() {
         dataRoot: 'data',
         show_tracklist: true,
         show_nav: true,
+        show_menu: true,
         show_overview: true,
 
         refSeqs: "{dataRoot}/seq/refSeqs.json",
@@ -1562,8 +1565,7 @@ _configDefaults: function() {
         },
 
         highlightSearchedRegions: false,
-        highResolutionMode: 'disabled',
-        sortHierarchicalTrackList: true
+        highResolutionMode: 'disabled'
     };
 },
 
@@ -2312,7 +2314,11 @@ cookie: function(keyWithoutId,value) {
         return localStorage.getItem( keyWithId );
     }
     else if( value ) {
+        try {
         return localStorage.setItem(keyWithId, value);
+        }
+        catch(e) {
+        }
     }
 
     return (localStorage.getItem( keyWithId ) || dojo.cookie(keyWithoutId));
