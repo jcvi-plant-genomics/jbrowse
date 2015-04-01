@@ -62,7 +62,7 @@ define( [
                             return f.toUpperCase() != 'PASS';
                         }
                     })
-            },
+            }
                 });
 
             var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution","sequence_alteration"];

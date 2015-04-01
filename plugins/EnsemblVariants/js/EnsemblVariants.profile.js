@@ -24,6 +24,7 @@ var profile = {
         'EnsemblVariants/main': {
             include: [
                 'EnsemblVariants',
+                'EnsemblVariants/View/Track/CanvasVariants'
             ],
             exclude: [ 'JBrowse' ]
         }
