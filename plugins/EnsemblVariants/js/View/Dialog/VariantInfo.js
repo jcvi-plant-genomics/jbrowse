@@ -384,6 +384,61 @@ define( [
             return genotypeElement;
         },
 
+	colorArray: function() {
+
+	    var colorObject = new Object();
+	    colorObject['missense_variant'] = {'color': '#ffd700', 'num': '34', 'group': 'Major'};
+	    colorObject['transcript_ablation'] = {'color': '#ff0000', 'num': '33', 'group': 'Major'};
+	    colorObject['frameshift_variant'] = {'color': '#ff69b4', 'num': '32', 'group': 'Major'};
+	    colorObject['stop_gained'] = {'color': '#ff0000', 'num': '31', 'group': 'Major'};
+	    colorObject['stop_lost'] = {'color': '#ff0000', 'num': '30', 'group': 'Major'};
+	    colorObject['NMD_transcript_variant'] = {'color': '#ff4500', 'num': '29', 'group': 'Major'};
+	    colorObject['inframe_insertion'] = {'color': '#ff69b4', 'num': '28', 'group': 'Major'};
+	    colorObject['inframe_deletion'] = {'color': '#ff69b4', 'num': '27', 'group': 'Major'};
+	    colorObject['initiator_codon_variant'] = {'color': '#ffd700', 'num': '26', 'group': 'Major'};
+	    colorObject['splice_donor_variant'] = {'color': '#ff7f50', 'num': '25', 'group': 'Splice'};
+	    colorObject['splice_acceptor_variant'] = {'color': '#ff7f50', 'num': '24', 'group': 'Splice'};
+	    colorObject['splice_region_variant'] = {'color': '#ff7f50', 'num': '23', 'group': 'Splice'};
+	    colorObject['5_prime_UTR_variant'] = {'color': '#7ac5cd', 'num': '22', 'group': 'UTR'};
+	    colorObject['3_prime_UTR_variant'] = {'color': '#7ac5cd', 'num': '21', 'group': 'UTR'};
+	    colorObject['TFBS_ablation'] = {'color': '#a52a2a', 'num': '20', 'group': 'Regulatory'};
+	    colorObject['TFBS_amplification'] = {'color': '#a52a2a', 'num': '19', 'group': 'Regulatory'};
+	    colorObject['TF_binding_site_variant'] = {'color': '#a52a2a', 'num': '18', 'group': 'Regulatory'};
+	    colorObject['regulatory_region_variant'] = {'color': '#a52a2a', 'num': '17', 'group': 'Regulatory'};
+	    colorObject['regulatory_region_ablation'] = {'color': '#a52a2a', 'num': '16', 'group': 'Regulatory'};
+	    colorObject['regulatory_region_amplification'] = {'color': '#a52a2a', 'num': '15', 'group': 'Regulatory'};
+	    colorObject['synonymous_variant'] = {'color': '#76ee00', 'num': '14', 'group': 'Others'};
+	    colorObject['transcript_amplification'] = {'color': '#ff69b4', 'num': '13', 'group': ''};
+	    colorObject['incomplete_terminal_codon_variant'] = {'color': '#ff00ff', 'num': '12', 'group': 'Others'};
+	    colorObject['stop_retained_variant'] = {'color': '#76ee00', 'num': '11', 'group': 'Others'};
+	    colorObject['coding_sequence_variant'] = {'color': '#458b00', 'num': '10', 'group': 'Others'};
+	    colorObject['upstream_gene_variant'] = {'color': '#a2b5cd', 'num': '9', 'group': 'Others'};
+	    colorObject['downstream_gene_variant'] = {'color': '#a2b5cd', 'num': '8', 'group': 'Others'};
+	    colorObject['mature_miRNA_variant'] = {'color': '#458b00', 'num': '7', 'group': 'Others'};
+	    colorObject['non_coding_exon_variant'] = {'color': '#32cd32', 'num': '6', 'group': 'Others'};
+	    colorObject['non_coding_transcript_variant'] = {'color': '#32cd32', 'num': '5', 'group': 'Others'};
+	    colorObject['intron_variant'] = {'color': '#02599c', 'num': '4', 'group': 'Others'};
+	    colorObject['feature_elongation'] = {'color': '#7f7f7f', 'num': '3', 'group': 'Others'};
+	    colorObject['feature_truncation'] = {'color': '#7f7f7f', 'num': '2', 'group': 'Others'};
+	    colorObject['intergenic_variant'] = {'color': '#636363', 'num': '1', 'group': 'Others'};
+
+	    return colorObject;
+	},
+
+	variantTrackLegend: function() {
+	    var colorArray = this.colorArray();
+	    var legend = "<div class='variantColorLegend'><table>";
+            for(var cid in colorArray){
+                color = colorArray[cid].color;
+                type = colorArray[cid].type;
+                colordiv = "<tr><td><div style='background-color:" + color + "; width: 20px;'>&nbsp</div></td><td>"+type+"</td></tr>";
+                legend += colordiv;
+            }
+            legend += "</table></div>";
+
+	    return legend;
+	},
+
         variantColor: function(feature) {
             var colorArray = new Array();
             colorArray = [{'type': 'transcript_ablation', 'color': '#ff0000', 'num': '34'},{'type': 'splice_donor_variant', 'color': '#ff7f50', 'num': '33'},{'type': 'splice_acceptor_variant', 'color': '#ff7f50', 'num': '32'},{'type': 'stop_gained', 'color': '#ff0000', 'num': '31'},{'type': 'frameshift_variant', 'color': '#ff69b4', 'num': '30'},{'type': 'stop_lost', 'color': '#ff0000', 'num': '29'},{'type': 'initiator_codon_variant', 'color': '#ffd700', 'num': '28'},{'type': 'inframe_insertion', 'color': '#ff69b4', 'num': '27'},{'type': 'inframe_deletion', 'color': '#ff69b4', 'num': '26'},{'type': 'missense_variant', 'color': '#ffd700', 'num': '25'},{'type': 'transcript_amplification', 'color': '#ff69b4', 'num': '24'},{'type': 'splice_region_variant', 'color': '#ff7f50', 'num': '23'},{'type': 'incomplete_terminal_codon_variant', 'color': '#ff00ff', 'num': '22'},{'type': 'synonymous_variant', 'color': '#76ee00', 'num': '21'},{'type': 'stop_retained_variant', 'color': '#76ee00', 'num': '20'},{'type': 'coding_sequence_variant', 'color': '#458b00', 'num': '19'},{'type': 'mature_miRNA_variant', 'color': '#458b00', 'num': '18'},{'type': '5_prime_UTR_variant', 'color': '#7ac5cd', 'num': '17'},{'type': '3_prime_UTR_variant', 'color': '#7ac5cd', 'num': '16'},{'type': 'non_coding_exon_variant', 'color': '#32cd32', 'num': '15'},{'type': 'non_coding_transcript_variant', 'color': '#32cd32', 'num': '14'},{'type': 'intron_variant', 'color': '#02599c', 'num': '13'},{'type': 'NMD_transcript_variant', 'color': '#ff4500', 'num': '12'},{'type': 'upstream_gene_variant', 'color': '#a2b5cd', 'num': '11'},{'type': 'downstream_gene_variant', 'color': '#a2b5cd', 'num': '10'},{'type': 'TFBS_ablation', 'color': '#a52a2a', 'num': '9'},{'type': 'TFBS_amplification', 'color': '#a52a2a', 'num': '8'},{'type': 'TF_binding_site_variant', 'color': '#a52a2a', 'num': '7'},{'type': 'regulatory_region_variant', 'color': '#a52a2a', 'num': '6'},{'type': 'regulatory_region_ablation', 'color': '#a52a2a', 'num': '5'},{'type': 'regulatory_region_amplification', 'color': '#a52a2a', 'num': '4'},{'type': 'feature_elongation', 'color': '#7f7f7f', 'num': '3'},{'type': 'feature_truncation', 'color': '#7f7f7f', 'num': '2'},{'type': 'intergenic_variant', 'color': '#636363', 'num': '1'}];
@@ -401,3 +456,5 @@ define( [
         }
     });
 });
+
+

@@ -27,6 +27,8 @@ define( [
             VariantInfo
             ) {
     return declare( [ FeatureDetailMixin, CanvasVariants, VariantInfo ], {
+
+
         _makeVCFFilters: function( vcfHeader, inheritedFilters ) {
             // wraps the callback to return true if there
             // is no filter attr
@@ -72,7 +74,7 @@ define( [
                 fname = filterVariantTypeList[id];
                 variantTypeFilters[fname] = function ( fname ) {
                     return {
-                        desc: "Show " + fname + "s",
+                        desc: "Show " + fname,
                             title: fname,
                             func:  function(f) {
                                 var type = f.get('type');
@@ -86,31 +88,28 @@ define( [
                 }.call(this, fname, fname);
             }
 
+	    var variantConsequenceFilters = lang.mixin();
+	    var colorArray = this.colorArray();
+	    for (var type in colorArray) {
+		var color = colorArray[type]['color'];
+		var num = colorArray[type]['num'];
+		var group = colorArray[type]['group'];
 
-
-            var colorArray = new Array();
-            colorArray = [{'type': 'transcript_ablation', 'color': '#ff0000', 'num': '34'},{'type': 'splice_donor_variant', 'color': '#ff7f50', 'num': '33'},{'type': 'splice_acceptor_variant', 'color': '#ff7f50', 'num': '32'},{'type': 'stop_gained', 'color': '#ff0000', 'num': '31'},{'type': 'frameshift_variant', 'color': '#ff69b4', 'num': '30'},{'type': 'stop_lost', 'color': '#ff0000', 'num': '29'},{'type': 'initiator_codon_variant', 'color': '#ffd700', 'num': '28'},{'type': 'inframe_insertion', 'color': '#ff69b4', 'num': '27'},{'type': 'inframe_deletion', 'color': '#ff69b4', 'num': '26'},{'type': 'missense_variant', 'color': '#ffd700', 'num': '25'},{'type': 'transcript_amplification', 'color': '#ff69b4', 'num': '24'},{'type': 'splice_region_variant', 'color': '#ff7f50', 'num': '23'},{'type': 'incomplete_terminal_codon_variant', 'color': '#ff00ff', 'num': '22'},{'type': 'synonymous_variant', 'color': '#76ee00', 'num': '21'},{'type': 'stop_retained_variant', 'color': '#76ee00', 'num': '20'},{'type': 'coding_sequence_variant', 'color': '#458b00', 'num': '19'},{'type': 'mature_miRNA_variant', 'color': '#458b00', 'num': '18'},{'type': '5_prime_UTR_variant', 'color': '#7ac5cd', 'num': '17'},{'type': '3_prime_UTR_variant', 'color': '#7ac5cd', 'num': '16'},{'type': 'non_coding_exon_variant', 'color': '#32cd32', 'num': '15'},{'type': 'non_coding_transcript_variant', 'color': '#32cd32', 'num': '14'},{'type': 'intron_variant', 'color': '#02599c', 'num': '13'},{'type': 'NMD_transcript_variant', 'color': '#ff4500', 'num': '12'},{'type': 'upstream_gene_variant', 'color': '#a2b5cd', 'num': '11'},{'type': 'downstream_gene_variant', 'color': '#a2b5cd', 'num': '10'},{'type': 'TFBS_ablation', 'color': '#a52a2a', 'num': '9'},{'type': 'TFBS_amplification', 'color': '#a52a2a', 'num': '8'},{'type': 'TF_binding_site_variant', 'color': '#a52a2a', 'num': '7'},{'type': 'regulatory_region_variant', 'color': '#a52a2a', 'num': '6'},{'type': 'regulatory_region_ablation', 'color': '#a52a2a', 'num': '5'},{'type': 'regulatory_region_amplification', 'color': '#a52a2a', 'num': '4'},{'type': 'feature_elongation', 'color': '#7f7f7f', 'num': '3'},{'type': 'feature_truncation', 'color': '#7f7f7f', 'num': '2'},{'type': 'intergenic_variant', 'color': '#636363', 'num': '1'}];
-
-            var variantConsequenceFilters = lang.mixin();
-            for(var cid in colorArray){
-                type = colorArray[cid].type;
-                color = colorArray[cid].color;
-                variantConsequenceFilters[type] = function ( type ) {
+		variantConsequenceFilters[type] = function ( type ) {
                     return {
-                        desc: "<table><tr><td>Show " + type + "s</td><td><div style='background-color:" + color + "; width: 10px;'>&nbsp</div></td></tr></table>",
-                            title: type,
-                            func:  function(f) {
-                                var consequence = f.get('MSC');
-                                if( consequence == type ) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                        desc: "<table><tr><td>Show " + type + "</td><td><div style='background-color:" + color + "; width: 10px;'>&nbsp</div></td></tr></table>",
+                        title: type,
+                        func:  function(f) {
+                            var consequence = f.get('MSC');
+                            if( consequence == type ) {
+                                return true;
+                            } else {
+                                return false;
                             }
+                        }
                     }
                 }.call(this, type, type);
-
-            }
+	    }
 
             if( vcfHeader.filter ) {
                 for( var filterName in vcfHeader.filter ) {
@@ -153,6 +152,7 @@ define( [
         _variantsFilterTrackMenuOptions: function() {
             // add toggles for feature filters
             var track = this;
+	    var colorObject = this.colorArray();
 
             return this._getNamedFeatureFilters()
                 .then( function( filters) {
@@ -163,8 +163,27 @@ define( [
                     // header
 
                     var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution", "sequence_alteration"];
+		    var filterConsequenceList = Object.keys(colorObject);
+		    var filterMajorGroupList = new Array();
+		    var filterSpliceGroupList = new Array();
+		    var filterUTRGroupList = new Array();
+		    var filterRegulatoryGroupList = new Array();
+		    var filterOthersGroupList = new Array();
 
-                    var filterConsequenceList = ['transcript_ablation','splice_donor_variant','splice_acceptor_variant','stop_gained','frameshift_variant','stop_lost','initiator_codon_variant','inframe_insertion','inframe_deletion','missense_variant','transcript_amplification','splice_region_variant','incomplete_terminal_codon_variant','synonymous_variant','stop_retained_variant','coding_sequence_variant','mature_miRNA_variant','5_prime_UTR_variant','3_prime_UTR_variant','non_coding_exon_variant','non_coding_transcript_variant','intron_variant','NMD_transcript_variant','upstream_gene_variant','downstream_gene_variant','TFBS_ablation','TFBS_amplification','TF_binding_site_variant','regulatory_region_variant','regulatory_region_ablation','regulatory_region_amplification','feature_elongation','feature_truncation','intergenic_variant'];
+		    for (var type in colorObject) {
+			var group = colorObject[type]['group'];
+			if(group == 'Major'){
+			    filterMajorGroupList.push(type);
+			} else if (group == 'Splice') {
+			    filterSpliceGroupList.push(type);
+			} else if (group == 'UTR') {
+			    filterUTRGroupList.push(type);
+			} else if (group == 'Regulatory') {
+			    filterRegulatoryGroupList.push(type);
+			} else {
+			    filterOthersGroupList.push(type);
+			}
+		    }
 
                     var menuItems = [
                     'hideFilterPass',
@@ -179,12 +198,12 @@ define( [
                 else
                     menuItems.pop(); //< pop off the separator since we have no additional ones
 
-                var new_filters = track._makeFeatureFilterTrackMenuItems( filterVariantTypeList, filterConsequenceList, filters);
+                var new_filters = track._makeFeatureFilterTrackMenuItems( filterVariantTypeList, filterMajorGroupList, filterSpliceGroupList, filterUTRGroupList, filterRegulatoryGroupList, filterOthersGroupList, filters);
 
                 return new_filters;
                 });
         },
-        _makeFeatureFilterTrackMenuItems: function( typeList, consequenceList, filters ) {
+        _makeFeatureFilterTrackMenuItems: function( typeList, majorGroupList, spliceGroupList, utrGroupList, regulatoryGroupList, othersGroupList, filters ) {
             var thisB = this;
             var browser = this.browser;
 
@@ -210,65 +229,134 @@ define( [
 
             }
 
-            var legend = "<div class='variantColorLegend'><table>";
-            var colorArray = new Array();
-            colorArray = [{'type': 'transcript_ablation', 'color': '#ff0000', 'num': '34'},{'type': 'splice_donor_variant', 'color': '#ff7f50', 'num': '33'},{'type': 'splice_acceptor_variant', 'color': '#ff7f50', 'num': '32'},{'type': 'stop_gained', 'color': '#ff0000', 'num': '31'},{'type': 'frameshift_variant', 'color': '#ff69b4', 'num': '30'},{'type': 'stop_lost', 'color': '#ff0000', 'num': '29'},{'type': 'initiator_codon_variant', 'color': '#ffd700', 'num': '28'},{'type': 'inframe_insertion', 'color': '#ff69b4', 'num': '27'},{'type': 'inframe_deletion', 'color': '#ff69b4', 'num': '26'},{'type': 'missense_variant', 'color': '#ffd700', 'num': '25'},{'type': 'transcript_amplification', 'color': '#ff69b4', 'num': '24'},{'type': 'splice_region_variant', 'color': '#ff7f50', 'num': '23'},{'type': 'incomplete_terminal_codon_variant', 'color': '#ff00ff', 'num': '22'},{'type': 'synonymous_variant', 'color': '#76ee00', 'num': '21'},{'type': 'stop_retained_variant', 'color': '#76ee00', 'num': '20'},{'type': 'coding_sequence_variant', 'color': '#458b00', 'num': '19'},{'type': 'mature_miRNA_variant', 'color': '#458b00', 'num': '18'},{'type': '5_prime_UTR_variant', 'color': '#7ac5cd', 'num': '17'},{'type': '3_prime_UTR_variant', 'color': '#7ac5cd', 'num': '16'},{'type': 'non_coding_exon_variant', 'color': '#32cd32', 'num': '15'},{'type': 'non_coding_transcript_variant', 'color': '#32cd32', 'num': '14'},{'type': 'intron_variant', 'color': '#02599c', 'num': '13'},{'type': 'NMD_transcript_variant', 'color': '#ff4500', 'num': '12'},{'type': 'upstream_gene_variant', 'color': '#a2b5cd', 'num': '11'},{'type': 'downstream_gene_variant', 'color': '#a2b5cd', 'num': '10'},{'type': 'TFBS_ablation', 'color': '#a52a2a', 'num': '9'},{'type': 'TFBS_amplification', 'color': '#a52a2a', 'num': '8'},{'type': 'TF_binding_site_variant', 'color': '#a52a2a', 'num': '7'},{'type': 'regulatory_region_variant', 'color': '#a52a2a', 'num': '6'},{'type': 'regulatory_region_ablation', 'color': '#a52a2a', 'num': '5'},{'type': 'regulatory_region_amplification', 'color': '#a52a2a', 'num': '4'},{'type': 'feature_elongation', 'color': '#7f7f7f', 'num': '3'},{'type': 'feature_truncation', 'color': '#7f7f7f', 'num': '2'},{'type': 'intergenic_variant', 'color': '#636363', 'num': '1'}];
-
-            for(var cid in colorArray){
-                color = colorArray[cid].color;
-                type = colorArray[cid].type;
-                colordiv = "<tr><td><div style='background-color:" + color + "; width: 20px;'>&nbsp</div></td><td>"+type+"</td></tr>";
-                legend += colordiv;
-            }
-            legend += "</table></div>";
-
+	    var trackLegend = this.variantTrackLegend();
 
             return when( filters || this._getNamedFeatureFilters() )
                 .then( function( filters ) {
 
-                    var consequenceArray = array.map(
-                        consequenceList,
+                    var majorGroupArray = array.map(
+                        majorGroupList,
                         function( name ) {
                             browser.cookie(name, "1");
                             if( name == 'SEPARATOR' )
-                        return { type: 'dijit/MenuSeparator' };
-                    return { label: filters[0][name].desc,
-                        title: filters[0][name].title,
-                        type: 'dijit/CheckedMenuItem',
-                        checked: "true",
-                        onClick: function(event) {
-                            browser.cookie(name, this.get("checked") ? "1" : "0");
-                            browser.addFeatureFilter(variantFilter(name), name);
-                            browser.view.redrawTracks();
+				return { type: 'dijit/MenuSeparator' };
+			    return { label: filters[0][name].desc,
+				     title: filters[0][name].title,
+				     type: 'dijit/CheckedMenuItem',
+				     checked: "true",
+				     onClick: function(event) {
+					 browser.cookie(name, this.get("checked") ? "1" : "0");
+					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.view.redrawTracks();
+				     }
+				   };
                         }
-                    };
+                    );
+
+                    var spliceGroupArray = array.map(
+                        spliceGroupList,
+                        function( name ) {
+                            browser.cookie(name, "1");
+                            if( name == 'SEPARATOR' )
+				return { type: 'dijit/MenuSeparator' };
+			    return { label: filters[0][name].desc,
+				     title: filters[0][name].title,
+				     type: 'dijit/CheckedMenuItem',
+				     checked: "true",
+				     onClick: function(event) {
+					 browser.cookie(name, this.get("checked") ? "1" : "0");
+					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.view.redrawTracks();
+				     }
+				   };
                         }
-                        );
+                    );
+
+
+                    var utrGroupArray = array.map(
+                        utrGroupList,
+                        function( name ) {
+                            browser.cookie(name, "1");
+                            if( name == 'SEPARATOR' )
+				return { type: 'dijit/MenuSeparator' };
+			    return { label: filters[0][name].desc,
+				     title: filters[0][name].title,
+				     type: 'dijit/CheckedMenuItem',
+				     checked: "true",
+				     onClick: function(event) {
+					 browser.cookie(name, this.get("checked") ? "1" : "0");
+					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.view.redrawTracks();
+				     }
+				   };
+                        }
+                    );
+
+                    var regulatoryGroupArray = array.map(
+                        regulatoryGroupList,
+                        function( name ) {
+                            browser.cookie(name, "1");
+                            if( name == 'SEPARATOR' )
+				return { type: 'dijit/MenuSeparator' };
+			    return { label: filters[0][name].desc,
+				     title: filters[0][name].title,
+				     type: 'dijit/CheckedMenuItem',
+				     checked: "true",
+				     onClick: function(event) {
+					 browser.cookie(name, this.get("checked") ? "1" : "0");
+					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.view.redrawTracks();
+				     }
+				   };
+                        }
+                    );
+
+                    var othersGroupArray = array.map(
+                        othersGroupList,
+                        function( name ) {
+                            browser.cookie(name, "1");
+                            if( name == 'SEPARATOR' )
+				return { type: 'dijit/MenuSeparator' };
+			    return { label: filters[0][name].desc,
+				     title: filters[0][name].title,
+				     type: 'dijit/CheckedMenuItem',
+				     checked: "true",
+				     onClick: function(event) {
+					 browser.cookie(name, this.get("checked") ? "1" : "0");
+					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.view.redrawTracks();
+				     }
+				   };
+                        }
+                    );
 
                     var typeArray = array.map(
-                            typeList,
-                            function( name ) {
-                                browser.cookie(name, "1");
-                                if( name == 'SEPARATOR' )
-                        return { type: 'dijit/MenuSeparator' };
-                    return { label: filters[1][name].desc,
-                        title: filters[1][name].title,
-                        type: 'dijit/CheckedMenuItem',
-                        checked: "true",
-                        onClick: function(event) {
-                            browser.cookie(name, this.get("checked") ? "1" : "0");
-                            browser.addFeatureFilter(variantFilter(name), name);
-                            browser.view.redrawTracks();
+                        typeList,
+                        function( name ) {
+                            browser.cookie(name, "1");
+                            if( name == 'SEPARATOR' )
+				return { type: 'dijit/MenuSeparator' };
+			    return { label: filters[1][name].desc,
+				     title: filters[1][name].title,
+				     type: 'dijit/CheckedMenuItem',
+				     checked: "true",
+				     onClick: function(event) {
+					 browser.cookie(name, this.get("checked") ? "1" : "0");
+					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.view.redrawTracks();
+				     }
+				   };
                         }
-                    };
-                            }
-                            );
+                    );
 
+		    var consequenceGroupArray = new Array();
+		    consequenceGroupArray = [{label: 'Major Variant Types', title: 'Major Variant Subcategory', children: majorGroupArray},{label: 'Splice Variant Types', title: 'Splice Variant Subcategory', children: spliceGroupArray},{label: 'UTR Variant Types', title:'UTR Variant Subcategory', children: utrGroupArray },{label: 'Regulatory Variant Types', title: 'Regulatory Variant Subcategory', children: regulatoryGroupArray},{label: 'Other Variant Types', title: 'Other Variant Subcategory', children: othersGroupArray}];
+		    
                     var new_options =  [
                     {
                         label: 'Filter features by consequence type',
                             title: "Choose variant consequence filter.",
-                            children: consequenceArray
+                            children: consequenceGroupArray
                     },
                     {
                         label: 'Filter features by variant type',
@@ -280,10 +368,10 @@ define( [
                         title: 'Ensembl Variant Consequences ',
                         iconClass: 'dijitIconChart',
                         action: 'contentDialog',
-                        content: legend
+                        content: trackLegend
                     }
                     ];
-                    var mergedArray =  consequenceArray.concat.apply( consequenceArray, new_options );
+                    var mergedArray =  consequenceGroupArray.concat.apply( consequenceGroupArray, new_options );
 
                     return new_options;
                 });
