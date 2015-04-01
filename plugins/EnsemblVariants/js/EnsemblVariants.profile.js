@@ -13,7 +13,7 @@ var profile = {
 
     basePath: '../../../src',
     packages: [
-        {name: 'VariantFilter', location: '../plugins/VariantFilter/js' }
+        {name: 'EnsemblVariants', location: '../plugins/EnsemblVariants/js' }
     ],
 
     layerOptimize: 'closure',
@@ -21,9 +21,9 @@ var profile = {
     selectorEngine: 'acme',
 
     layers: {
-        'VariantFilter/main': {
+        'EnsemblVariants/main': {
             include: [
-                'VariantFilter',
+                'EnsemblVariants',
             ],
             exclude: [ 'JBrowse' ]
         }
@@ -56,7 +56,7 @@ var profile = {
 
         // Files that should not be copied when the “mini” compiler flag is set to true.
         miniExclude: function (filename, mid) {
-            return ! ( /^VariantFilter/.test(mid) );
+            return ! ( /^EnsemblVariants/.test(mid) );
         }
     }
 };

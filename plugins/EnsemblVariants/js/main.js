@@ -9,10 +9,9 @@ define([
 
         return declare(JBrowsePlugin, {
             constructor: function(args) {
-		console.log("Loaded VariantFilter plugin");
-		var browser = args.browser;
-	}
-
+                console.log("Loaded EnsemblVariants plugin");
+                var browser = args.browser;
+            }
         });
 
     });
