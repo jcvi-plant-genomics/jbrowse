@@ -36,10 +36,10 @@ define( [
             var url_base2 = 'http://rest.ensemblgenomes.org/vep/Arabidopsis%20thaliana/id/';
             var url_variation = '?content-type=application/json;protein=1;numbers=1;canonical=1;ccds=1;domains=1';
             var json_variation_url = url_base2 + variant_id + url_variation;
-            var standby = "<div id='standby1'><img src='img/ajax-loader.gif'></div>";
-            var standby2 = "<div id='standby2'><img src='img/ajax-loader.gif'></div>";
-            var standby3 = "<div id='standby3'><img src='img/ajax-loader.gif'></div>";
-            var standby4 = "<div id='standby4'><img src='img/ajax-loader.gif'></div>";
+            var standby = "<div id='standby1'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
+            var standby2 = "<div id='standby2'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
+            var standby3 = "<div id='standby3'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
+            var standby4 = "<div id='standby4'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 
             xhr(json_variation_url, {
                 handleAs: "json",
