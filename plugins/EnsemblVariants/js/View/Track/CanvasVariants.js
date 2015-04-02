@@ -207,28 +207,6 @@ define( [
 		    var thisB = this;
 		    var browser = this.browser;
 
-
-		    function variantFilter ( name ) {
-			return function( f ) {
-			    var msc = f.get('MSC');
-			    var type = f.get('type');
-			    var msccurrstatus = browser.cookie(msc);
-			    var typecurrstatus = browser.cookie(type);
-			    if(typeof msccurrstatus == 'undefined'){
-				msccurrstatus = 1;
-			    }
-			    if(typeof typecurrstatus == 'undefined'){
-				typecurrstatus = 1;
-			    }
-			    if(msccurrstatus == "1" && typecurrstatus == "1"){
-				return true;
-			    }else{
-				return false;
-			    }
-			}
-
-		    }
-
 		    var trackLegend = this.variantTrackLegend();
 		    var majorGroupArray = this.makeGroupArray(majorGroupList,filters[0]);
 		    var spliceGroupArray = this.makeGroupArray(spliceGroupList,filters[0]);

@@ -439,30 +439,32 @@ define( [
 		    return legend;
 		},
 
+		variantFilter: function( name ) {
+		    var browser = this.browser;
+
+		    return function( f ) {
+			var msc = f.get('MSC');
+			var type = f.get('type');
+			var msccurrstatus = browser.cookie(msc);
+			var typecurrstatus = browser.cookie(type);
+			if(typeof msccurrstatus == 'undefined'){
+			    msccurrstatus = 1;
+			}
+			if(typeof typecurrstatus == 'undefined'){
+			    typecurrstatus = 1;
+			}
+			if(msccurrstatus == "1" && typecurrstatus == "1"){
+			    return true;
+			}else{
+			    return false;
+			}
+		    }
+		    
+		},
+		
 		makeGroupArray: function(groupList,groupFilter) {
 		    var thisB = this;
 		    var browser = this.browser;
-
-		    function variantFilter ( name ) {
-			return function( f ) {
-			    var msc = f.get('MSC');
-			    var type = f.get('type');
-			    var msccurrstatus = browser.cookie(msc);
-			    var typecurrstatus = browser.cookie(type);
-			    if(typeof msccurrstatus == 'undefined'){
-				msccurrstatus = 1;
-			    }
-			    if(typeof typecurrstatus == 'undefined'){
-				typecurrstatus = 1;
-			    }
-			    if(msccurrstatus == "1" && typecurrstatus == "1"){
-				return true;
-			    }else{
-				return false;
-			    }
-			}
-
-		    }
 
 		    var majorGroupArray = array.map(
 			groupList,
@@ -476,7 +478,7 @@ define( [
 				     checked: "true",
 				     onClick: function(event) {
 					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
+					 browser.addFeatureFilter(thisB.variantFilter( name ), name);
 					 browser.view.redrawTracks();
 				     }
 				   };
