@@ -4,16 +4,16 @@
  */
 
 define( [
-        'dojo/_base/declare',
-        'dojo/_base/lang',
-        'dojo/promise/all',
-        'dojo/_base/array',
-        'dojo/when',
-        'JBrowse/Util',
-        'JBrowse/View/Track/_FeatureDetailMixin',
-        'JBrowse/View/Track/CanvasVariants',
-        'EnsemblVariants/View/Dialog/VariantInfo'
-        ],
+    'dojo/_base/declare',
+    'dojo/_base/lang',
+    'dojo/promise/all',
+    'dojo/_base/array',
+    'dojo/when',
+    'JBrowse/Util',
+    'JBrowse/View/Track/_FeatureDetailMixin',
+    'JBrowse/View/Track/CanvasVariants',
+    'EnsemblVariants/View/Dialog/VariantInfo'
+],
 
         function(
             declare,
@@ -25,357 +25,248 @@ define( [
             FeatureDetailMixin,
             CanvasVariants,
             VariantInfo
-            ) {
-    return declare( [ FeatureDetailMixin, CanvasVariants, VariantInfo ], {
+        ) {
+	    return declare( [ FeatureDetailMixin, CanvasVariants, VariantInfo ], {
 
 
-        _makeVCFFilters: function( vcfHeader, inheritedFilters ) {
-            // wraps the callback to return true if there
-            // is no filter attr
-            function makeFilterFilter( condition ) {
-                return function(f) {
-                    f = f.get('filter');
-                    return !f || condition(f);
-                };
-            }
+		_makeVCFFilters: function( vcfHeader, inheritedFilters ) {
+		    // wraps the callback to return true if there
+		    // is no filter attr
+		    function makeFilterFilter( condition ) {
+			return function(f) {
+			    f = f.get('filter');
+			    return !f || condition(f);
+			};
+		    }
 
-            var filters = lang.mixin(
-                {},
-                inheritedFilters,
-                {
-                    hideFilterPass: {
-                        desc: 'Hide sites passing all filters',
-            func: makeFilterFilter(
-                function( filter ) {
-                    try {
-                        return filter.values.join('').toUpperCase() != 'PASS';
-                    } catch(e) {
-                        return filter.toUpperCase() != 'PASS';
-                    }
-                })
-                    },
-            hideNotFilterPass: {
-                desc: 'Hide sites not passing all filters',
-                func: makeFilterFilter(
-                    function( f ) {
-                        try {
-                            return f.values.join('').toUpperCase() == 'PASS';
-                        } catch(e) {
-                            return f.toUpperCase() != 'PASS';
-                        }
-                    })
-            }
-                });
+		    var filters = lang.mixin(
+			{},
+			inheritedFilters,
+			{
+			    hideFilterPass: {
+				desc: 'Hide sites passing all filters',
+				func: makeFilterFilter(
+				    function( filter ) {
+					try {
+					    return filter.values.join('').toUpperCase() != 'PASS';
+					} catch(e) {
+					    return filter.toUpperCase() != 'PASS';
+					}
+				    })
+			    },
+			    hideNotFilterPass: {
+				desc: 'Hide sites not passing all filters',
+				func: makeFilterFilter(
+				    function( f ) {
+					try {
+					    return f.values.join('').toUpperCase() == 'PASS';
+					} catch(e) {
+					    return f.toUpperCase() != 'PASS';
+					}
+				    })
+			    }
+			});
 
-            var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution","sequence_alteration"];
-            var variantTypeFilters = lang.mixin();
+		    var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution","sequence_alteration"];
+		    var variantTypeFilters = lang.mixin();
 
-            for( var id in filterVariantTypeList){
-                fname = filterVariantTypeList[id];
-                variantTypeFilters[fname] = function ( fname ) {
-                    return {
-                        desc: "Show " + fname,
-                            title: fname,
-                            func:  function(f) {
-                                var type = f.get('type');
-                                if( type == fname ) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
-                            }
-                    }
-                }.call(this, fname, fname);
-            }
+		    for( var id in filterVariantTypeList){
+			fname = filterVariantTypeList[id];
+			variantTypeFilters[fname] = function ( fname ) {
+			    return {
+				desc: "Show " + fname,
+				title: fname,
+				func:  function(f) {
+                                    var type = f.get('type');
+                                    if( type == fname ) {
+					return true;
+                                    } else {
+					return false;
+                                    }
+				}
+			    }
+			}.call(this, fname, fname);
+		    }
 
-	    var variantConsequenceFilters = lang.mixin();
-	    var colorArray = this.colorArray();
-	    for (var type in colorArray) {
-		var color = colorArray[type]['color'];
-		var num = colorArray[type]['num'];
-		var group = colorArray[type]['group'];
+		    var variantConsequenceFilters = lang.mixin();
+		    var colorArray = this.colorArray();
+		    for (var type in colorArray) {
+			var color = colorArray[type]['color'];
+			var num = colorArray[type]['num'];
+			var group = colorArray[type]['group'];
 
-		variantConsequenceFilters[type] = function ( type ) {
-                    return {
-                        desc: "<table><tr><td>Show " + type + "</td><td><div style='background-color:" + color + "; width: 10px;'>&nbsp</div></td></tr></table>",
-                        title: type,
-                        func:  function(f) {
-                            var consequence = f.get('MSC');
-                            if( consequence == type ) {
-                                return true;
-                            } else {
-                                return false;
-                            }
-                        }
-                    }
-                }.call(this, type, type);
-	    }
+			variantConsequenceFilters[type] = function ( type ) {
+			    return {
+				desc: "<table><tr><td>Show " + type + "</td><td><div style='background-color:" + color + "; width: 10px;'>&nbsp</div></td></tr></table>",
+				title: type,
+				func:  function(f) {
+				    var consequence = f.get('MSC');
+				    if( consequence == type ) {
+					return true;
+				    } else {
+					return false;
+				    }
+				}
+			    }
+			}.call(this, type, type);
+		    }
 
-            if( vcfHeader.filter ) {
-                for( var filterName in vcfHeader.filter ) {
-                    filters[filterName] = function( filterName, filterSpec ) {
-                        return {
-                            desc: 'Hide sites not passing filter "'+filterName+'"',
-                            title: filterName+': '+filterSpec.description,
-                            func: makeFilterFilter(
-                                    function( f ) {
-                                        var fs = f.values || f;
-                                        if( ! fs[0] ) return true;
+		    if( vcfHeader.filter ) {
+			for( var filterName in vcfHeader.filter ) {
+			    filters[filterName] = function( filterName, filterSpec ) {
+				return {
+				    desc: 'Hide sites not passing filter "'+filterName+'"',
+				    title: filterName+': '+filterSpec.description,
+				    func: makeFilterFilter(
+					function( f ) {
+                                            var fs = f.values || f;
+                                            if( ! fs[0] ) return true;
 
-                                        return ! array.some(
-                                            fs,
-                                            function(fname) {
-                                                return fname == filterName;
-                                            });
-                                    })
-                        };
-                    }.call(this, filterName, vcfHeader.filter[filterName]);
-                }
-            }
-
-            return [variantConsequenceFilters,variantTypeFilters];
-        },
-        // filters for VCF sites
-        _getNamedFeatureFilters: function() {
-            var thisB = this;
-
-            return all([ this.store.getVCFHeader && this.store.getVCFHeader(), this.inherited(arguments) ])
-                .then( function() {
-
-                    if( arguments[0][0] ) {
-                        return thisB._makeVCFFilters.apply( thisB, arguments[0] );
-                    } else {
-                        return arguments[0][1];
-                    }
-                });
-        },
-        _variantsFilterTrackMenuOptions: function() {
-            // add toggles for feature filters
-            var track = this;
-	    var colorObject = this.colorArray();
-
-            return this._getNamedFeatureFilters()
-                .then( function( filters) {
-
-                    // merge our builtin filters with additional ones
-                    // that might have been generated in
-                    // _getNamedFeatureFilters() based on e.g. the VCF
-                    // header
-
-                    var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution", "sequence_alteration"];
-		    var filterConsequenceList = Object.keys(colorObject);
-		    var filterMajorGroupList = new Array();
-		    var filterSpliceGroupList = new Array();
-		    var filterUTRGroupList = new Array();
-		    var filterRegulatoryGroupList = new Array();
-		    var filterOthersGroupList = new Array();
-
-		    for (var type in colorObject) {
-			var group = colorObject[type]['group'];
-			if(group == 'Major'){
-			    filterMajorGroupList.push(type);
-			} else if (group == 'Splice') {
-			    filterSpliceGroupList.push(type);
-			} else if (group == 'UTR') {
-			    filterUTRGroupList.push(type);
-			} else if (group == 'Regulatory') {
-			    filterRegulatoryGroupList.push(type);
-			} else {
-			    filterOthersGroupList.push(type);
+                                            return ! array.some(
+						fs,
+						function(fname) {
+                                                    return fname == filterName;
+						});
+					})
+				};
+			    }.call(this, filterName, vcfHeader.filter[filterName]);
 			}
 		    }
 
-                    var menuItems = [
-                    'hideFilterPass',
-                    'hideNotFilterPass',
-                    'SEPARATOR'
-                    ];
+		    return [variantConsequenceFilters,variantTypeFilters];
+		},
+		// filters for VCF sites
+		_getNamedFeatureFilters: function() {
+		    var thisB = this;
 
-                var withAdditional = Util.uniq( menuItems.concat( Util.dojof.keys( filters ) ) );
+		    return all([ this.store.getVCFHeader && this.store.getVCFHeader(), this.inherited(arguments) ])
+			.then( function() {
 
-                if( withAdditional.length > menuItems.length )
-                    menuItems = withAdditional;
-                else
-                    menuItems.pop(); //< pop off the separator since we have no additional ones
+			    if( arguments[0][0] ) {
+				return thisB._makeVCFFilters.apply( thisB, arguments[0] );
+			    } else {
+				return arguments[0][1];
+			    }
+			});
+		},
+		_variantsFilterTrackMenuOptions: function() {
+		    // add toggles for feature filters
+		    var track = this;
+		    var colorObject = this.colorArray();
 
-                var new_filters = track._makeFeatureFilterTrackMenuItems( filterVariantTypeList, filterMajorGroupList, filterSpliceGroupList, filterUTRGroupList, filterRegulatoryGroupList, filterOthersGroupList, filters);
+		    return this._getNamedFeatureFilters()
+			.then( function( filters) {
 
-                return new_filters;
-                });
-        },
-        _makeFeatureFilterTrackMenuItems: function( typeList, majorGroupList, spliceGroupList, utrGroupList, regulatoryGroupList, othersGroupList, filters ) {
-            var thisB = this;
-            var browser = this.browser;
+			    // merge our builtin filters with additional ones
+			    // that might have been generated in
+			    // _getNamedFeatureFilters() based on e.g. the VCF
+			    // header
 
+			    var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution", "sequence_alteration"];
+			    var filterConsequenceList = Object.keys(colorObject);
+			    var filterMajorGroupList = new Array();
+			    var filterSpliceGroupList = new Array();
+			    var filterUTRGroupList = new Array();
+			    var filterRegulatoryGroupList = new Array();
+			    var filterOthersGroupList = new Array();
 
-            function variantFilter ( name ) {
-                return function( f ) {
-                    var msc = f.get('MSC');
-                    var type = f.get('type');
-                    var msccurrstatus = browser.cookie(msc);
-                    var typecurrstatus = browser.cookie(type);
-                    if(typeof msccurrstatus == 'undefined'){
-                        msccurrstatus = 1;
-                    }
-                    if(typeof typecurrstatus == 'undefined'){
-                        typecurrstatus = 1;
-                    }
-                    if(msccurrstatus == "1" && typecurrstatus == "1"){
-                        return true;
-                    }else{
-                        return false;
-                    }
-                }
+			    for (var type in colorObject) {
+				var group = colorObject[type]['group'];
+				if(group == 'Major'){
+				    filterMajorGroupList.push(type);
+				} else if (group == 'Splice') {
+				    filterSpliceGroupList.push(type);
+				} else if (group == 'UTR') {
+				    filterUTRGroupList.push(type);
+				} else if (group == 'Regulatory') {
+				    filterRegulatoryGroupList.push(type);
+				} else {
+				    filterOthersGroupList.push(type);
+				}
+			    }
 
-            }
+			    var menuItems = [
+				'hideFilterPass',
+				'hideNotFilterPass',
+				'SEPARATOR'
+			    ];
 
-	    var trackLegend = this.variantTrackLegend();
+			    var withAdditional = Util.uniq( menuItems.concat( Util.dojof.keys( filters ) ) );
 
-            return when( filters || this._getNamedFeatureFilters() )
-                .then( function( filters ) {
+			    if( withAdditional.length > menuItems.length )
+				menuItems = withAdditional;
+			    else
+				menuItems.pop(); //< pop off the separator since we have no additional ones
 
-                    var majorGroupArray = array.map(
-                        majorGroupList,
-                        function( name ) {
-                            browser.cookie(name, "1");
-                            if( name == 'SEPARATOR' )
-				return { type: 'dijit/MenuSeparator' };
-			    return { label: filters[0][name].desc,
-				     title: filters[0][name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
-                        }
-                    );
+			    var new_filters = track._makeFeatureFilterTrackMenuItems( filterVariantTypeList, filterMajorGroupList, filterSpliceGroupList, filterUTRGroupList, filterRegulatoryGroupList, filterOthersGroupList, filters);
 
-                    var spliceGroupArray = array.map(
-                        spliceGroupList,
-                        function( name ) {
-                            browser.cookie(name, "1");
-                            if( name == 'SEPARATOR' )
-				return { type: 'dijit/MenuSeparator' };
-			    return { label: filters[0][name].desc,
-				     title: filters[0][name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
-                        }
-                    );
+			    return new_filters;
+			});
+		},
+		_makeFeatureFilterTrackMenuItems: function( typeList, majorGroupList, spliceGroupList, utrGroupList, regulatoryGroupList, othersGroupList, filters ) {
+		    var thisB = this;
+		    var browser = this.browser;
 
 
-                    var utrGroupArray = array.map(
-                        utrGroupList,
-                        function( name ) {
-                            browser.cookie(name, "1");
-                            if( name == 'SEPARATOR' )
-				return { type: 'dijit/MenuSeparator' };
-			    return { label: filters[0][name].desc,
-				     title: filters[0][name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
-                        }
-                    );
+		    function variantFilter ( name ) {
+			return function( f ) {
+			    var msc = f.get('MSC');
+			    var type = f.get('type');
+			    var msccurrstatus = browser.cookie(msc);
+			    var typecurrstatus = browser.cookie(type);
+			    if(typeof msccurrstatus == 'undefined'){
+				msccurrstatus = 1;
+			    }
+			    if(typeof typecurrstatus == 'undefined'){
+				typecurrstatus = 1;
+			    }
+			    if(msccurrstatus == "1" && typecurrstatus == "1"){
+				return true;
+			    }else{
+				return false;
+			    }
+			}
 
-                    var regulatoryGroupArray = array.map(
-                        regulatoryGroupList,
-                        function( name ) {
-                            browser.cookie(name, "1");
-                            if( name == 'SEPARATOR' )
-				return { type: 'dijit/MenuSeparator' };
-			    return { label: filters[0][name].desc,
-				     title: filters[0][name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
-                        }
-                    );
+		    }
 
-                    var othersGroupArray = array.map(
-                        othersGroupList,
-                        function( name ) {
-                            browser.cookie(name, "1");
-                            if( name == 'SEPARATOR' )
-				return { type: 'dijit/MenuSeparator' };
-			    return { label: filters[0][name].desc,
-				     title: filters[0][name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
-                        }
-                    );
+		    var trackLegend = this.variantTrackLegend();
+		    var majorGroupArray = this.makeGroupArray(majorGroupList,filters[0]);
+		    var spliceGroupArray = this.makeGroupArray(spliceGroupList,filters[0]);
+		    var utrGroupArray = this.makeGroupArray(utrGroupList,filters[0]);
+		    var regulatoryGroupArray = this.makeGroupArray(regulatoryGroupList,filters[0]);
+		    var othersGroupArray = this.makeGroupArray(othersGroupList,filters[0]);
+		    var typeArray = this.makeGroupArray(typeList,filters[1]);
 
-                    var typeArray = array.map(
-                        typeList,
-                        function( name ) {
-                            browser.cookie(name, "1");
-                            if( name == 'SEPARATOR' )
-				return { type: 'dijit/MenuSeparator' };
-			    return { label: filters[1][name].desc,
-				     title: filters[1][name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(variantFilter(name), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
-                        }
-                    );
+		    return when( filters || this._getNamedFeatureFilters() )
+			.then( function( filters ) {
 
-		    var consequenceGroupArray = new Array();
-		    consequenceGroupArray = [{label: 'Major Variant Types', title: 'Major Variant Subcategory', children: majorGroupArray},{label: 'Splice Variant Types', title: 'Splice Variant Subcategory', children: spliceGroupArray},{label: 'UTR Variant Types', title:'UTR Variant Subcategory', children: utrGroupArray },{label: 'Regulatory Variant Types', title: 'Regulatory Variant Subcategory', children: regulatoryGroupArray},{label: 'Other Variant Types', title: 'Other Variant Subcategory', children: othersGroupArray}];
-		    
-                    var new_options =  [
-                    {
-                        label: 'Filter features by consequence type',
-                            title: "Choose variant consequence filter.",
-                            children: consequenceGroupArray
-                    },
-                    {
-                        label: 'Filter features by variant type',
-                        title: "Choose variant typefilter.",
-                        children: typeArray
-                    },
-                    {
-                        label: 'Display Color Legend',
-                        title: 'Ensembl Variant Consequences ',
-                        iconClass: 'dijitIconChart',
-                        action: 'contentDialog',
-                        content: trackLegend
-                    }
-                    ];
-                    var mergedArray =  consequenceGroupArray.concat.apply( consequenceGroupArray, new_options );
+			    var consequenceGroupArray = new Array();
+			    consequenceGroupArray = [{label: 'Major Variant Types', title: 'Major Variant Subcategory', children: majorGroupArray},{label: 'Splice Variant Types', title: 'Splice Variant Subcategory', children: spliceGroupArray},{label: 'UTR Variant Types', title:'UTR Variant Subcategory', children: utrGroupArray },{label: 'Regulatory Variant Types', title: 'Regulatory Variant Subcategory', children: regulatoryGroupArray},{label: 'Other Variant Types', title: 'Other Variant Subcategory', children: othersGroupArray}];
+			    
+			    var new_options =  [
+				{
+				    label: 'Filter features by consequence type',
+				    title: "Choose variant consequence filter.",
+				    children: consequenceGroupArray
+				},
+				{
+				    label: 'Filter features by variant type',
+				    title: "Choose variant typefilter.",
+				    children: typeArray
+				},
+				{
+				    label: 'Display Color Legend',
+				    title: 'Ensembl Variant Consequences ',
+				    iconClass: 'dijitIconChart',
+				    action: 'contentDialog',
+				    content: trackLegend
+				}
+			    ];
+			    var mergedArray =  consequenceGroupArray.concat.apply( consequenceGroupArray, new_options );
 
-                    return new_options;
-                });
-        }
+			    return new_options;
+			});
+		}
 
-    });
-});
+	    });
+	});
