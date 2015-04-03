@@ -32,12 +32,14 @@ define( [
 		    var genotype_status = "<p class='tableHeaders'>Genotypes</p><div id='tableElement1'></div>";
 		    var population_status = "<p class='tableHeaders'>Populations</p><div id='tableElement2'></div>";
 		    var phenotype_status = "<p class='tableHeaders'>Phenotypes</p><div id='tableElement4'></div>";
-		    var url_base = 'http://rest.ensemblgenomes.org/variation/arabidopsis_thaliana/';
+		    var ensemblresturl ="https://api.araport.org/community/v0.3/ensemblgenomes/rest_ensemblgenomes_v0.1/access";
+		    var url_base = ensemblresturl +'/variation/arabidopsis_thaliana/';
 		    var url_genotype = '?content-type=application/json&genotypes=1&pops=1&population_genotypes=1&phenotypes=1';
 		    var json_genotype_url = url_base + variant_id + url_genotype;
-		    var url_base2 = 'http://rest.ensemblgenomes.org/vep/Arabidopsis%20thaliana/id/';
-		    var url_variation = '?content-type=application/json;protein=1;numbers=1;canonical=1;ccds=1;domains=1';
+		    var url_base2 = ensemblresturl+ '/vep/Arabidopsis%20thaliana/id/';
+		    var url_variation = '?content-type=application/json&protein=1&numbers=1&canonical=1&ccds=1&domains=1';
 		    var json_variation_url = url_base2 + variant_id + url_variation;
+		    var token="543c998c802e96d881f970182b77d";
 		    var standby = "<div id='standby1'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby2 = "<div id='standby2'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby3 = "<div id='standby3'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
@@ -46,7 +48,7 @@ define( [
 		    xhr(json_variation_url, {
 			handleAs: "json",
 			headers: {
-			    "X-Requested-With": null
+			    "Authorization": "Bearer "+token
 			}
 		    }).then(function(data2) {
 			dataStore5 = new ObjectStore({
@@ -156,7 +158,7 @@ define( [
 		    xhr(json_genotype_url, {
 			handleAs: "json",
 			headers: {
-			    "X-Requested-With": null
+			    "Authorization": "Bearer "+token
 			}
 		    }).then(function(data) {
 			dataStore = new ObjectStore({
