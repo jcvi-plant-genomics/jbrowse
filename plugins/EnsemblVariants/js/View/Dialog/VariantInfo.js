@@ -1,4 +1,4 @@
-define( [
+define( "EnsemblVariants/View/Dialog/VariantInfo", [
     'dojo/_base/declare',
     'dojo/_base/array',
     'dojox/grid/EnhancedGrid',
@@ -39,7 +39,8 @@ define( [
 		    var url_base2 = ensemblresturl+ '/vep/Arabidopsis%20thaliana/id/';
 		    var url_variation = '?content-type=application/json&protein=1&numbers=1&canonical=1&ccds=1&domains=1';
 		    var json_variation_url = url_base2 + variant_id + url_variation;
-		    var token="543c998c802e96d881f970182b77d";
+		    //var token="543c998c802e96d881f970182b77d";
+		    var token="7216bcb47ff9243dac2224d12b39664";
 		    var standby = "<div id='standby1'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby2 = "<div id='standby2'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby3 = "<div id='standby3'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
@@ -139,7 +140,10 @@ define( [
 				}
 			    });
 			    document.getElementById("standby1").style.display="none";
-			    if (data2[0].transcript_consequences.length < 8) {
+			    if(data2[0].transcript_consequences.length == 1 ) {
+				new_height = row_height * data2[0].transcript_consequences.length + 10;
+				document.getElementById("tableElement5").style.height = new_height + "%";
+			    }else if (data2[0].transcript_consequences.length > 1 && data2[0].transcript_consequences.length < 8) {
 				new_height = row_height * data2[0].transcript_consequences.length + base_height;
 				document.getElementById("tableElement5").style.height = new_height + "%";
 			    }
@@ -148,7 +152,7 @@ define( [
 			} else {
 			    document.getElementById("standby1").style.display="none";
 			    document.getElementById("tableElement5").style.height="3%";
-			    document.getElementById("tableElement5").innerHTML = "<p class='nodata'>Genotype data is not available for " + variant_id + ".</p>";
+			    document.getElementById("tableElement5").innerHTML = "<p class='nodata'>Data is not available for " + variant_id + ".</p>";
 			}
 		    }, function(err) {
 			document.getElementById("standby1").style.display="none";
@@ -275,7 +279,7 @@ define( [
 			} else {
 			    document.getElementById("standby3").style.display = "none";
 			    document.getElementById("tableElement2").style.height = "3%";
-			    document.getElementById("tableElement2").innerHTML = "<p class='nodata'>Genotype data is not available for " + variant_id + ".</p>";
+			    document.getElementById("tableElement2").innerHTML = "<p class='nodata'>Population data is not available for " + variant_id + ".</p>";
 			}
 			if (data.phenotypes.length > 0) {
 			    grid4 = new EnhancedGrid({
@@ -353,7 +357,8 @@ define( [
 		    var fend = feature.get('end');
 		    var ve = feature.data.VE;
 		    var new_ve="";
-		    var msc = feature.data.MSC;
+		    var msc = "";
+		    msc = feature.data.MSC;
 		    var mscType = msc.toString();
 		    var alternative_allele = feature.get('alternative_alleles');
 		    var reference_allele = feature.get('reference_allele');
@@ -497,7 +502,8 @@ define( [
 		    var color = "#000000";
 		    var most_severe_num = 0;
 		    var msc = feature.data.MSC;
-		    var variantType = msc.toString();
+		    variantType = "";
+		    variantType = msc.toString();
 		    for (var i = 0, len = colorArray.length; i < len; i++) {
 			if (colorArray[i].type === variantType) {
 			    color = colorArray[i].color;
