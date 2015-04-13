@@ -5,13 +5,18 @@
 // prefer to add variables to jbrowse.conf instead of this file, since
 // jbrowse.conf is much easier to hand-edit.
 {
-        suppressUsageStatistics: true,
-        datasets: {
-	            arabidopsis:  { url: '?data=arabidopsis', name: 'Arabidopsis TAIR10 Genome Release' },
+        "suppressUsageStatistics" : true,
+        "datasets" : {
+	            "arabidopsis":  {
+                    "url" : "?data=arabidopsis",
+                    "name" : "Arabidopsis TAIR10 Genome Release"
+                }
 	    },
-        projectHome: {
-            logo: '<img src="https://s.gravatar.com/avatar/978e836a9d65238a784543ad932637cd.png" alt="Arabidopsis thaliana" height="27px" />',
-            href: 'https://www.araport.org',
-            title: 'AIP Home'
-        },
+        "defaultLocation" : "Chr1:24330920..24334428",
+        "defaultTracks" : "TAIR10_genome,TAIR10_genes,MAKER_EST_FLcDNA_est2genome,MAKER_protein2genome",
+        "projectHome" : {
+            "logo" : "<img src='https://s.gravatar.com/avatar/978e836a9d65238a784543ad932637cd.png' alt='Arabidopsis thaliana' height='27px' />",
+            "href" : "https://www.araport.org",
+            "title" : "Araport Home"
+        }
 }
