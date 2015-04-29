@@ -360,6 +360,34 @@ div.hggreen-hist {
     border-color: gray;
 }
 
+
+.diamond-transparent {
+    position:absolute;
+    height: 8px;
+    width: 8px !important;
+    background-image: url('img/diamond-transparent.png');
+    background-repeat: none !important;
+    cursor: pointer;
+}
+
+.box-transparent {
+    position:absolute;
+    height: 8px;
+    width: 8px !important;
+    background-image: url('img/box-transparent.png');
+    background-repeat: none !important;
+    cursor: pointer;
+}
+
+.triangle-transparent {
+    position:absolute;
+    height: 8px;
+    width: 8px !important;
+    background-image: url('img/box-transparent.png');
+    background-repeat: none !important;
+    cursor: pointer;
+}
+
 .diamond, .plus-diamond, .minus-diamond {
     position: absolute;
     width: 6px !important;
