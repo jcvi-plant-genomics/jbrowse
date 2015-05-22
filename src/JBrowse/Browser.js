@@ -200,7 +200,7 @@ _initialLocation: function() {
 version: function() {
     // when a build is put together, the build system assigns a string
     // to the variable below.
-    var BUILD_SYSTEM_JBROWSE_VERSION;
+    var BUILD_SYSTEM_JBROWSE_VERSION = "1.11.6";
     return BUILD_SYSTEM_JBROWSE_VERSION || 'development';
 }.call(),
 
@@ -705,12 +705,11 @@ initView: function() {
                                     new dijitMenuItem(
                                         {
                                             id: 'menubar_generalhelp',
-                                            label: 'General',
+                                            label: 'Quick User Guide',
                                             iconClass: 'jbrowseIconHelp',
                                             onClick: showHelp
                                         })
-                                  );
-
+                                  );	    
             this.renderGlobalMenu( 'help', {}, menuBar );
         }
 

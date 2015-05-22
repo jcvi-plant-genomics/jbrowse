@@ -36,7 +36,7 @@ return declare( null,
         myquery[op] = name;
 
         return xhr( thisB.url+"?"+ioQuery.objectToQuery( myquery ),
-                    { handleAs: "json" }
+                    { handleAs: "json"}
         ).then(function(data){
             for (var i = 0; i < data.length; i++){
                 var dat = data[i];
