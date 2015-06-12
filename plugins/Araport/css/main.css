@@ -1,0 +1,36 @@
+.trackListTable {
+    font-size:12px;
+    color:#FFFFFF;
+    border-width: 5px;
+    border-color: #000000;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border-radius: 10px;
+    text-align: left;
+    table-layout: fixed;
+    display:table;
+    width: 700px;
+}
+
+.trackListTable td {
+    height: 20px;
+    padding: 4px 4px 4px 10px;
+}
+
+.trackListHeader {
+    width: 30%;
+}
+
+.trackListValue {
+    width: 70%;
+}
+
+.odd {
+    background-color:#4785C2;
+    width: 700px;
+}
+
+.even {
+    background-color:#5B91C8;
+    width: 700px;
+}
