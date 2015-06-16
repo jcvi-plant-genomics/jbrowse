@@ -43,8 +43,8 @@ var XYPlot = declare( [WiggleBase, YScaleMixin], // mdb: this file is a copy of 
                     //pos_color: 'blue',
                     //neg_color: 'red',
                     origin_color: '#888',
-                    variance_band_color: 'rgba(0,0,0,0.3)',
-                },
+                    variance_band_color: 'rgba(0,0,0,0.3)'
+                }
             }
         );
     },
@@ -333,8 +333,8 @@ var XYPlot = declare( [WiggleBase, YScaleMixin], // mdb: this file is a copy of 
 		                                	width: '100px',
 		                                    position: 'absolute',
 		                                    left: fRect.l,
-		                                    top: topOffset,
-		                                    //zIndex: 10,
+		                                    top: topOffset
+		                                    //zIndex: 10
 		                                },
 		                                innerHTML: label
 		                            }, canvas.parentNode );
@@ -609,7 +609,7 @@ var XYPlot = declare( [WiggleBase, YScaleMixin], // mdb: this file is a copy of 
                             track.colorDialog = new ColorDialog({
                                 title: "Change colors",
                                 style: {
-                                    width: '230px',
+                                    width: '230px'
                             },
                             items: track.config.coge.experiments || [track.config.coge],
                             featureColor: track.config.style.featureColor,

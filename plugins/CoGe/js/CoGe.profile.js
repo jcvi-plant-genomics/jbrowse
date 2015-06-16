@@ -24,7 +24,10 @@ var profile = {
         'CoGe/main': {
             include: [
                 'CoGe',
-                'CoGe/View/Track/Wiggle/XYPlot',
+                'CoGe/View/ColorDialog',
+                'CoGe/View/Track/Wiggle/_Scale',
+                'CoGe/View/Track/Wiggle/Density',
+                'CoGe/View/Track/Wiggle/MultiXYPlot'
             ],
             exclude: [ 'JBrowse' ]
         }

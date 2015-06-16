@@ -72,7 +72,7 @@ return declare( ActionBarDialog,
 			//id: "defaultCB",
 			checked: !firstItem.featureColor,
 			style: {
-				'margin-top': '10px',
+				'margin-top': '10px'
 			},
 			onChange: function(b) {
 				//console.log('checkbox change: '+b);
@@ -86,7 +86,7 @@ return declare( ActionBarDialog,
 		actionBar.appendChild(
 			dojo.create("label",
 					{ 'for': 'defaultCB',
-					  innerHTML: ' Default',
+					  innerHTML: ' Default'
 					}
 			)
 		);
