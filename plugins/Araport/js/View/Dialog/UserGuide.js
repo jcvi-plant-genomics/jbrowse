@@ -1,4 +1,4 @@
-define( "Araport/View/Dialog/AraportGuide", [
+define( "Araport/View/Dialog/UserGuide", [
             'dojo/_base/declare',
             'JBrowse/View/InfoDialog'
         ],
@@ -19,7 +19,7 @@ return declare( InfoDialog, {
             this.content = this.defaultContent;
         }
     },
-    
+
     _makeDefaultContent: function() {
         return    ''
                 + '<div class="help_dialog">'
@@ -36,7 +36,7 @@ return declare( InfoDialog, {
 	        + '    <li><a href="#newfeatures">New Features</a></li>'
 	        + '    <li><a href="#FutureDevelopments">Future Developments</a></li>'
 	        + '    <li><a target="_blank" href="https://www.araport.org/help/faq#t348n239">FAQ</a></li>'
-	        + '    <li><a target="_blank" href="https://www.araport.org/jbrowse/user-guide">View in Araport</a></li>'	
+	        + '    <li><a target="_blank" href="https://www.araport.org/jbrowse/user-guide">View in Araport</a></li>'
                 + '</ul></dd>'
                 + '<h2 id="setup">Setup and Configuration Documentation</h2>'
                 + '<dd><ul>'
@@ -45,7 +45,7 @@ return declare( InfoDialog, {
 	        + '    <li><a target="_blank" href="docs/config.html"><tt>biodb-to-json.pl</tt> reference</a></li>'
 		+ '    <li><a target="_blank" href="docs/featureglyphs.html">HTMLFeatures class reference</a></li>'
                 + '</ul></dd>'
-                + '<h2 id="navigation">Navigation</h2>'	
+                + '<h2 id="navigation">Navigation</h2>'
                 + '<dd><ul>'
 	        + '    <li>JBrowse has a simple double pane interface, with the list of tracks on the left side and the display of features on the right. The navigation and search panel are located right below the menu bar.</li>'
                 + '</ul></dd>'
@@ -67,7 +67,7 @@ return declare( InfoDialog, {
                 + '    </ul>'
 	        + '<img src="plugins/Araport/img/activate_track.jpg" height="250px">'
 	        + '<ul>'
-	        + '<li>A drop down menu is available for each track.</li>' 	    
+	        + '<li>A drop down menu is available for each track.</li>'
 	        + '</ul>'
 	        + '<img src="plugins/Araport/img/track_submenu.jpg" height="230px">'
                 + '</dd>'
@@ -76,7 +76,7 @@ return declare( InfoDialog, {
                 + '    <li>Jump to a feature by typing its name in the location box and pressing Enter. You can also search by the gene symbol.</li>'
                 + '    <li>Jump to a specific region by typing the coordinates into the location box as: <span class="example">ref:start..end</span></li>'
                 + '    <li>The metadata that is available in the Faceted list selector is search/filter enabled as well.</li>'
-                + '    <li>The track list can be filtered using the text box.</li>'	
+                + '    <li>The track list can be filtered using the text box.</li>'
 	        + '</ul>'
 	        + '<img src="plugins/Araport/img/filter_by_featureId.jpg" height="150px">'
                 + '</dd>'
@@ -88,7 +88,7 @@ return declare( InfoDialog, {
                 + '        <dt>chr4:79,500,000..80,000,000</dt><dd>jumps the region on chromosome 4 between 79.5Mb and 80Mb.</dd>'
                 + '        <dt>5678</dt><dd>centers the display at base 5,678 on the current sequence</dd>'
                 + '    </dl>'
-                + '</dd>'	
+                + '</dd>'
                 + '<h2 id="data">Data</h2>'
 	        + '<dd>'
 	        + '<table class="trackListTable">'
@@ -122,7 +122,7 @@ return declare( InfoDialog, {
 	        + '<tr class="even"><td class="trackListHeader">1001 Genomes (Ensembl v.78)</td><td class="TrackListValue">Variation features from Affy_250k, Perlegen_1M, WTCHG and 1001 Genomes, with Ensembl identifiers&nbsp;<img src="https://www.jcvi.org/cms/fileadmin/template/main/images/icons/icon-new.jpg"></td></tr>'
 	        + '<tr class="odd"><td class="trackListHeader">SALK TDNA-seq (O&#39;Malley R et al. release Dec 2014)</td><td class="trackListHeader">SALK TDNA-seq (O&#39;Malley R et al. release Dec 2014)&nbsp;<img src="https://www.jcvi.org/cms/fileadmin/template/main/images/icons/icon-new.jpg"></td></tr>'
 	        + '<tr class="even"><td class="trackListHeader">RNA-binding protein protected sites (Gosai et al. 2015)</td><td class="TrackListValue">RNA-binding protein protected sites (PPS) were detected using protein interaction profile sequencing (PIP-seq) on total nuclei from 10-day-old seedlings. A total of 61,632 PPSs were detected from two-replicate nuclear PIP-seq experiments, 64.7% of which overlap. Consolidation of two replicates yields 40,131 distinct sites which are presented in this track.</td></tr>'
-	        + '<tr class="odd"><td class="trackListHeader">EPIC-CoGe tracks</td><td class="TrackListValue">epigenetic Col-0 mutants (See Faceted List for metadata)</td></tr>'	
+	        + '<tr class="odd"><td class="trackListHeader">EPIC-CoGe tracks</td><td class="TrackListValue">epigenetic Col-0 mutants (See Faceted List for metadata)</td></tr>'
 
                 + '</table>'
                 + '</dd>'
@@ -136,14 +136,14 @@ return declare( InfoDialog, {
                 + '</dd>'
 	        + '<dt>Faceted Track Displayer</dt>'
                 + '<dd>'
-	        + '<ul>'	
+	        + '<ul>'
 	        + ' <li>In addition to the tracks available within the hierarchical menu, additional tracks are available through the faceted track displayer. </li>'
 	        + ' <li>The comprehensive list of metadata are available on the left hand side and is searchable. The data displayed within the columns are only a subset.</li>'
 	        + '<li>The dual display of the hierarchical and faceted list is a plugin we have developed within the Araport project.This enables the capability to partition tracks, placing metadata rich tracks in the “Faceted” selector while using the default “Hierarchical” selector for everything else.</li>'
                 + '</ul>'
 	        + '<img src="plugins/Araport/img/faceted_list.jpg" height="400px">'
                 + '</dd>'
-	        + '<h2 id="newfeatures">New Features</h2>'	
+	        + '<h2 id="newfeatures">New Features</h2>'
                 + '<dt>SeqLighter v1.0</dt>'
                 + '<dd><ul>'
 	        + '<li>SeqLighter is a dynamic sequence viewer plugin implemented with the <a target="_blank" href="http://biojs.net/">BioJS framework</a>.</li>'
@@ -165,7 +165,7 @@ return declare( InfoDialog, {
                 + '<dd><ul>'
                 + '<li>Select the 1001 Genomes track from the track list.</li>'
 	        + '<img src="plugins/Araport/img/VariantTrack_open.jpg" height="300px"><br>'
-                + '<br><li>The 1001 Genomes variant track is color coded by the most severe variant consequence using <a target="_blank" href="http://plants.ensembl.org/info/genome/variation/predicted_data.html#consequence_type_table">Ensembl&#39;s consequence diagram</a>.</li>' 
+                + '<br><li>The 1001 Genomes variant track is color coded by the most severe variant consequence using <a target="_blank" href="http://plants.ensembl.org/info/genome/variation/predicted_data.html#consequence_type_table">Ensembl&#39;s consequence diagram</a>.</li>'
 	        + '<li>The color legend is available on the track drop down menu.</li><br>'
 	        + '<img src="plugins/Araport/img/Ensembl_ColorLegend.jpg" height="450px"><br>'
 	        + '<br><li>The track can be filtered by the consequence variation type (missense, intron_variant, frameshift variants, etc):</li><br>'

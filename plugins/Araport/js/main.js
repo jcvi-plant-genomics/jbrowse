@@ -3,7 +3,7 @@ define([
     'dojo/_base/lang',
     'dijit/MenuItem',
     'JBrowse/Plugin',
-    './View/Dialog/AraportGuide'
+    './View/Dialog/UserGuide'
     ],
     function(
         declare,

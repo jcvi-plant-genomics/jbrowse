@@ -24,7 +24,7 @@ var profile = {
         'Araport/main': {
             include: [
                 'Araport',
-                'Araport/View/Dialog/AraportGuide',
+                'Araport/View/Dialog/UserGuide',
                 'Araport/Store/SeqFeature/REST'
             ],
             exclude: [ 'JBrowse' ]
