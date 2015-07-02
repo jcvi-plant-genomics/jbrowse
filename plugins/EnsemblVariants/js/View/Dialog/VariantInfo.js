@@ -394,6 +394,7 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		colorArray: function() {
 
 		    var colorObject = new Object();
+		    colorObject['All_Major_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'Major'};
 		    colorObject['missense_variant'] = {'color': '#ffd700', 'num': '34', 'group': 'Major'};
 		    colorObject['transcript_ablation'] = {'color': '#ff0000', 'num': '33', 'group': 'Major'};
 		    colorObject['frameshift_variant'] = {'color': '#ff69b4', 'num': '32', 'group': 'Major'};
@@ -403,17 +404,21 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    colorObject['inframe_insertion'] = {'color': '#ff69b4', 'num': '28', 'group': 'Major'};
 		    colorObject['inframe_deletion'] = {'color': '#ff69b4', 'num': '27', 'group': 'Major'};
 		    colorObject['initiator_codon_variant'] = {'color': '#ffd700', 'num': '26', 'group': 'Major'};
+		    colorObject['All_Splice_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'Splice'};
 		    colorObject['splice_donor_variant'] = {'color': '#ff7f50', 'num': '25', 'group': 'Splice'};
 		    colorObject['splice_acceptor_variant'] = {'color': '#ff7f50', 'num': '24', 'group': 'Splice'};
 		    colorObject['splice_region_variant'] = {'color': '#ff7f50', 'num': '23', 'group': 'Splice'};
+		    colorObject['All_UTR_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'UTR'};
 		    colorObject['5_prime_UTR_variant'] = {'color': '#7ac5cd', 'num': '22', 'group': 'UTR'};
 		    colorObject['3_prime_UTR_variant'] = {'color': '#7ac5cd', 'num': '21', 'group': 'UTR'};
+		    colorObject['All_Regulatory_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'Regulatory'};
 		    colorObject['TFBS_ablation'] = {'color': '#a52a2a', 'num': '20', 'group': 'Regulatory'};
 		    colorObject['TFBS_amplification'] = {'color': '#a52a2a', 'num': '19', 'group': 'Regulatory'};
 		    colorObject['TF_binding_site_variant'] = {'color': '#a52a2a', 'num': '18', 'group': 'Regulatory'};
 		    colorObject['regulatory_region_variant'] = {'color': '#a52a2a', 'num': '17', 'group': 'Regulatory'};
 		    colorObject['regulatory_region_ablation'] = {'color': '#a52a2a', 'num': '16', 'group': 'Regulatory'};
 		    colorObject['regulatory_region_amplification'] = {'color': '#a52a2a', 'num': '15', 'group': 'Regulatory'};
+		    colorObject['All_Other_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'Other'};	    
 		    colorObject['synonymous_variant'] = {'color': '#76ee00', 'num': '14', 'group': 'Others'};
 		    colorObject['transcript_amplification'] = {'color': '#ff69b4', 'num': '13', 'group': ''};
 		    colorObject['incomplete_terminal_codon_variant'] = {'color': '#ff00ff', 'num': '12', 'group': 'Others'};
@@ -473,22 +478,79 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    var thisB = this;
 		    var browser = this.browser;
 
+		    var filterVariantTypeList = ["All_Variant_Types","deletion","insertion", "SNV", "substitution","sequence_alteration","inversion"];
+		    
 		    var majorGroupArray = array.map(
 			groupList,
 			function( name ) {
 			    browser.cookie(name, "1");
-			    if( name == 'SEPARATOR' )
+			    if( name == 'SEPARATOR' ) {
 				return { type: 'dijit/MenuSeparator' };
-			    return { label: groupFilter[name].desc,
-				     title: groupFilter[name].title,
-				     type: 'dijit/CheckedMenuItem',
-				     checked: "true",
-				     onClick: function(event) {
-					 browser.cookie(name, this.get("checked") ? "1" : "0");
-					 browser.addFeatureFilter(thisB.variantFilter( name ), name);
-					 browser.view.redrawTracks();
-				     }
-				   };
+
+			    }else if(name == 'All_Major_Types' || name == 'All_Splice_Types' || name == 'All_UTR_Types' || name == 'All_Other_Types' || name == 'All_Regulatory_Types') {
+				return { label: groupFilter[name].desc,
+					 id: name,
+					 title: groupFilter[name].title,
+					 type: 'dijit/CheckedMenuItem',
+					 checked: "true",
+					 onClick: function(event) {
+					     
+					     for(var id in groupList){
+						 fname = groupList[id];
+						 
+						 browser.cookie(fname, this.get("checked") ? "1" : "0");
+						 browser.addFeatureFilter(thisB.variantFilter( fname ), fname);
+						 browser.view.redrawTracks();
+						 
+						 id = dijit.byId(fname);
+						 
+						 if(this.get("checked") == 1 ){
+						     id.set('checked',true);
+						 }else{
+						     id.set('checked',false);
+						 }
+					     }					     
+					 }
+				       };
+				
+			    }else if(name == 'All_Variant_Types') {
+				return { label: groupFilter[name].desc,
+					 id: name,
+					 title: groupFilter[name].title,
+					 type: 'dijit/CheckedMenuItem',
+					 checked: "true",
+					 onClick: function(event) {
+
+					     for(var id in filterVariantTypeList){
+						 fname = filterVariantTypeList[id];
+						 
+						 browser.cookie(fname, this.get("checked") ? "1" : "0");
+						 browser.addFeatureFilter(thisB.variantFilter( fname ), fname);
+						 browser.view.redrawTracks();
+
+						 id = dijit.byId(fname);
+						 
+						 if(this.get("checked") == 1 ){
+						     id.set('checked',true);
+						 }else{
+						     id.set('checked',false);
+						 }
+					     }					     
+					 }
+				       };				
+			    }else{
+				return { label: groupFilter[name].desc,
+					 title: groupFilter[name].title,
+					 id: name,
+					 type: 'dijit/CheckedMenuItem',
+					 checked: "true",
+					 onClick: function(event) {
+					     browser.cookie(name, this.get("checked") ? "1" : "0");
+					     browser.addFeatureFilter(thisB.variantFilter( name ), name);
+					     browser.view.redrawTracks();
+					 }
+				       };
+			    }
 			}
 		    );
 		    return majorGroupArray;
@@ -497,7 +559,7 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 
 		variantColor: function(feature) {
 		    var colorArray = new Array();
-		    colorArray = [{'type': 'transcript_ablation', 'color': '#ff0000', 'num': '34'},{'type': 'splice_donor_variant', 'color': '#ff7f50', 'num': '33'},{'type': 'splice_acceptor_variant', 'color': '#ff7f50', 'num': '32'},{'type': 'stop_gained', 'color': '#ff0000', 'num': '31'},{'type': 'frameshift_variant', 'color': '#ff69b4', 'num': '30'},{'type': 'stop_lost', 'color': '#ff0000', 'num': '29'},{'type': 'initiator_codon_variant', 'color': '#ffd700', 'num': '28'},{'type': 'inframe_insertion', 'color': '#ff69b4', 'num': '27'},{'type': 'inframe_deletion', 'color': '#ff69b4', 'num': '26'},{'type': 'missense_variant', 'color': '#ffd700', 'num': '25'},{'type': 'transcript_amplification', 'color': '#ff69b4', 'num': '24'},{'type': 'splice_region_variant', 'color': '#ff7f50', 'num': '23'},{'type': 'incomplete_terminal_codon_variant', 'color': '#ff00ff', 'num': '22'},{'type': 'synonymous_variant', 'color': '#76ee00', 'num': '21'},{'type': 'stop_retained_variant', 'color': '#76ee00', 'num': '20'},{'type': 'coding_sequence_variant', 'color': '#458b00', 'num': '19'},{'type': 'mature_miRNA_variant', 'color': '#458b00', 'num': '18'},{'type': '5_prime_UTR_variant', 'color': '#7ac5cd', 'num': '17'},{'type': '3_prime_UTR_variant', 'color': '#7ac5cd', 'num': '16'},{'type': 'non_coding_exon_variant', 'color': '#32cd32', 'num': '15'},{'type': 'non_coding_transcript_variant', 'color': '#32cd32', 'num': '14'},{'type': 'intron_variant', 'color': '#02599c', 'num': '13'},{'type': 'NMD_transcript_variant', 'color': '#ff4500', 'num': '12'},{'type': 'upstream_gene_variant', 'color': '#a2b5cd', 'num': '11'},{'type': 'downstream_gene_variant', 'color': '#a2b5cd', 'num': '10'},{'type': 'TFBS_ablation', 'color': '#a52a2a', 'num': '9'},{'type': 'TFBS_amplification', 'color': '#a52a2a', 'num': '8'},{'type': 'TF_binding_site_variant', 'color': '#a52a2a', 'num': '7'},{'type': 'regulatory_region_variant', 'color': '#a52a2a', 'num': '6'},{'type': 'regulatory_region_ablation', 'color': '#a52a2a', 'num': '5'},{'type': 'regulatory_region_amplification', 'color': '#a52a2a', 'num': '4'},{'type': 'feature_elongation', 'color': '#7f7f7f', 'num': '3'},{'type': 'feature_truncation', 'color': '#7f7f7f', 'num': '2'},{'type': 'intergenic_variant', 'color': '#636363', 'num': '1'}];
+		    colorArray = [{'type': 'All_Consequences', 'color': '#ffffff', 'num': '35'},{'type': 'transcript_ablation', 'color': '#ff0000', 'num': '34'},{'type': 'splice_donor_variant', 'color': '#ff7f50', 'num': '33'},{'type': 'splice_acceptor_variant', 'color': '#ff7f50', 'num': '32'},{'type': 'stop_gained', 'color': '#ff0000', 'num': '31'},{'type': 'frameshift_variant', 'color': '#ff69b4', 'num': '30'},{'type': 'stop_lost', 'color': '#ff0000', 'num': '29'},{'type': 'initiator_codon_variant', 'color': '#ffd700', 'num': '28'},{'type': 'inframe_insertion', 'color': '#ff69b4', 'num': '27'},{'type': 'inframe_deletion', 'color': '#ff69b4', 'num': '26'},{'type': 'missense_variant', 'color': '#ffd700', 'num': '25'},{'type': 'transcript_amplification', 'color': '#ff69b4', 'num': '24'},{'type': 'splice_region_variant', 'color': '#ff7f50', 'num': '23'},{'type': 'incomplete_terminal_codon_variant', 'color': '#ff00ff', 'num': '22'},{'type': 'synonymous_variant', 'color': '#76ee00', 'num': '21'},{'type': 'stop_retained_variant', 'color': '#76ee00', 'num': '20'},{'type': 'coding_sequence_variant', 'color': '#458b00', 'num': '19'},{'type': 'mature_miRNA_variant', 'color': '#458b00', 'num': '18'},{'type': '5_prime_UTR_variant', 'color': '#7ac5cd', 'num': '17'},{'type': '3_prime_UTR_variant', 'color': '#7ac5cd', 'num': '16'},{'type': 'non_coding_exon_variant', 'color': '#32cd32', 'num': '15'},{'type': 'non_coding_transcript_variant', 'color': '#32cd32', 'num': '14'},{'type': 'intron_variant', 'color': '#02599c', 'num': '13'},{'type': 'NMD_transcript_variant', 'color': '#ff4500', 'num': '12'},{'type': 'upstream_gene_variant', 'color': '#a2b5cd', 'num': '11'},{'type': 'downstream_gene_variant', 'color': '#a2b5cd', 'num': '10'},{'type': 'TFBS_ablation', 'color': '#a52a2a', 'num': '9'},{'type': 'TFBS_amplification', 'color': '#a52a2a', 'num': '8'},{'type': 'TF_binding_site_variant', 'color': '#a52a2a', 'num': '7'},{'type': 'regulatory_region_variant', 'color': '#a52a2a', 'num': '6'},{'type': 'regulatory_region_ablation', 'color': '#a52a2a', 'num': '5'},{'type': 'regulatory_region_amplification', 'color': '#a52a2a', 'num': '4'},{'type': 'feature_elongation', 'color': '#7f7f7f', 'num': '3'},{'type': 'feature_truncation', 'color': '#7f7f7f', 'num': '2'},{'type': 'intergenic_variant', 'color': '#636363', 'num': '1'}];
 		    var ve = feature.data.VE;
 		    var color = "#000000";
 		    var most_severe_num = 0;

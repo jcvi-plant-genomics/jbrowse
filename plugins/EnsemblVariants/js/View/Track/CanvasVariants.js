@@ -67,29 +67,32 @@ define( [
 			    }
 			});
 
-		    var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution","sequence_alteration"];
+		    var filterVariantTypeList = ["All_Variant_Types","deletion","insertion", "SNV", "substitution","sequence_alteration","inversion"];
 		    var variantTypeFilters = lang.mixin();
 
 		    for( var id in filterVariantTypeList){
 			fname = filterVariantTypeList[id];
+			
 			variantTypeFilters[fname] = function ( fname ) {
 			    return {
 				desc: "Show " + fname,
 				title: fname,
-				func:  function(f) {
-                                    var type = f.get('type');
-                                    if( type == fname ) {
-					return true;
-                                    } else {
-					return false;
-                                    }
-				}
+				    func:  function(f) {
+					var type = f.get('type');
+					if( type == fname ) {
+					    return true;
+					} else {
+					    return false;
+					}
+				    }
 			    }
 			}.call(this, fname, fname);
 		    }
-
+   
+		    
 		    var variantConsequenceFilters = lang.mixin();
 		    var colorArray = this.colorArray();
+
 		    for (var type in colorArray) {
 			var color = colorArray[type]['color'];
 			var num = colorArray[type]['num'];
@@ -162,7 +165,7 @@ define( [
 			    // _getNamedFeatureFilters() based on e.g. the VCF
 			    // header
 
-			    var filterVariantTypeList = ["deletion","insertion", "SNV", "substitution", "sequence_alteration"];
+			    var filterVariantTypeList = ["All_Variant_Types","deletion","insertion", "SNV", "substitution", "sequence_alteration", "inversion"];
 			    var filterConsequenceList = Object.keys(colorObject);
 			    var filterMajorGroupList = new Array();
 			    var filterSpliceGroupList = new Array();
