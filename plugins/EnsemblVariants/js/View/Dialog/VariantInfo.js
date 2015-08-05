@@ -39,8 +39,6 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    var url_base2 = ensemblresturl+ '/vep/Arabidopsis%20thaliana/id/';
 		    var url_variation = '?content-type=application/json&protein=1&numbers=1&canonical=1&ccds=1&domains=1';
 		    var json_variation_url = url_base2 + variant_id + url_variation;
-		    //var token="543c998c802e96d881f970182b77d";
-		    //var token="7216bcb47ff9243dac2224d12b39664";
 
 		    //Updated 07302015 for a lifespan of 10368000 Seconds; expires November 27, 2015 2:32:27 PM
 		    var token="4a3a657ec7c33ee892f439dc1552cd";
@@ -201,8 +199,8 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 				    field: "genotype",
 				    width: '20%'
 				}, {
-				    name: "Individual",
-				    field: "individual",
+				    name: "Sample",
+				    field: "sample",
 				    width: '60%'
 				}],
 				plugins: {
