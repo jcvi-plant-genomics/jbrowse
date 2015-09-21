@@ -40,8 +40,7 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    var url_variation = '?content-type=application/json&protein=1&numbers=1&canonical=1&ccds=1&domains=1';
 		    var json_variation_url = url_base2 + variant_id + url_variation;
 
-		    //Updated 07302015 for a lifespan of 10368000 Seconds; expires November 27, 2015 2:32:27 PM
-		    var token="4a3a657ec7c33ee892f439dc1552cd";
+		    var token = "2c3602085267e1c935bbfb7da6dd2e";
 		    var standby = "<div id='standby1'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby2 = "<div id='standby2'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby3 = "<div id='standby3'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
@@ -50,7 +49,7 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    xhr(json_variation_url, {
 			handleAs: "json",
 			headers: {
-			    "Authorization": "Bearer "+token
+			    "Authorization": "Bearer " + token
 			}
 		    }).then(function(data2) {
 			dataStore5 = new ObjectStore({
@@ -419,7 +418,7 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    colorObject['regulatory_region_variant'] = {'color': '#a52a2a', 'num': '17', 'group': 'Regulatory'};
 		    colorObject['regulatory_region_ablation'] = {'color': '#a52a2a', 'num': '16', 'group': 'Regulatory'};
 		    colorObject['regulatory_region_amplification'] = {'color': '#a52a2a', 'num': '15', 'group': 'Regulatory'};
-		    colorObject['All_Other_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'Other'};	    
+		    colorObject['All_Other_Types'] = {'color': '#ffffff', 'num': '35', 'group': 'Other'};
 		    colorObject['synonymous_variant'] = {'color': '#76ee00', 'num': '14', 'group': 'Others'};
 		    colorObject['transcript_amplification'] = {'color': '#ff69b4', 'num': '13', 'group': ''};
 		    colorObject['incomplete_terminal_codon_variant'] = {'color': '#ff00ff', 'num': '12', 'group': 'Others'};
@@ -472,15 +471,15 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 			    return false;
 			}
 		    }
-		    
+
 		},
-		
+
 		makeGroupArray: function(groupList,groupFilter) {
 		    var thisB = this;
 		    var browser = this.browser;
 
 		    var filterVariantTypeList = ["All_Variant_Types","deletion","insertion", "SNV", "substitution","sequence_alteration","inversion"];
-		    
+
 		    var majorGroupArray = array.map(
 			groupList,
 			function( name ) {
@@ -495,25 +494,25 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 					 type: 'dijit/CheckedMenuItem',
 					 checked: "true",
 					 onClick: function(event) {
-					     
+
 					     for(var id in groupList){
 						 fname = groupList[id];
-						 
+
 						 browser.cookie(fname, this.get("checked") ? "1" : "0");
 						 browser.addFeatureFilter(thisB.variantFilter( fname ), fname);
 						 browser.view.redrawTracks();
-						 
+
 						 id = dijit.byId(fname);
-						 
+
 						 if(this.get("checked") == 1 ){
 						     id.set('checked',true);
 						 }else{
 						     id.set('checked',false);
 						 }
-					     }					     
+					     }
 					 }
 				       };
-				
+
 			    }else if(name == 'All_Variant_Types') {
 				return { label: groupFilter[name].desc,
 					 id: name,
@@ -524,21 +523,21 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 
 					     for(var id in filterVariantTypeList){
 						 fname = filterVariantTypeList[id];
-						 
+
 						 browser.cookie(fname, this.get("checked") ? "1" : "0");
 						 browser.addFeatureFilter(thisB.variantFilter( fname ), fname);
 						 browser.view.redrawTracks();
 
 						 id = dijit.byId(fname);
-						 
+
 						 if(this.get("checked") == 1 ){
 						     id.set('checked',true);
 						 }else{
 						     id.set('checked',false);
 						 }
-					     }					     
+					     }
 					 }
-				       };				
+				       };
 			    }else{
 				return { label: groupFilter[name].desc,
 					 title: groupFilter[name].title,
