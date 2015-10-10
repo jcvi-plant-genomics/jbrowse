@@ -1,6 +1,12 @@
 /**
  * Store that gets data from any set of web services that implement
  * the JBrowse REST API.
+ *
+ * Araport/Store/SeqFeature/REST: specifically leverages the ADAMA
+ * microservices platform to map its '/search' endpoint to the 4 supported
+ * JBrowse REST endpoints: globalStats, regionStats, regionFeatureDensities and features
+ *
+ * This module works with ADAMA generic/query endpoints
  */
 define([
            'dojo/_base/declare',
@@ -8,7 +14,8 @@ define([
            'dojo/io-query',
            'dojo/request',
            'JBrowse/Store/LRUCache',
-           'JBrowse/Store/SeqFeature/REST'
+           'JBrowse/Store/SeqFeature/REST',
+           'Araport/Store/SeqFeature/RESTAuth'
        ],
        function(
            declare,
@@ -16,10 +23,11 @@ define([
            ioquery,
            dojoRequest,
            LRUCache,
-           REST
+           REST,
+           RESTAuth
        ) {
 
-return declare( [ REST ],
+return declare( [ REST, RESTAuth ],
 {
 
     getGlobalStats: function( callback, errorCallback ) {
@@ -81,53 +89,6 @@ return declare( [ REST ],
 
         // or error like:
         //   errorCallback( 'aieeee i died' );
-    },
-
-    // HELPER METHODS
-    _get: function( request, callback, errorCallback ) {
-        var thisB = this;
-        if( this.config.noCache )
-            dojoRequest( request.url, {
-                         method: 'GET',
-                         handleAs: 'json',
-                         headers : { 'Authorization': 'Bearer 7216bcb47ff9243dac2224d12b39664' }
-                     }).then(
-                         callback,
-                         this._errorHandler( errorCallback )
-                     );
-        else
-            this._getCache().get( request, function( record, error ) {
-                                      if( error )
-                                          thisB._errorHandler(errorCallback)(error);
-                                      else
-                                          callback( record.response );
-                                  });
-
-    },
-
-    _getCache: function() {
-        var thisB = this;
-        return this._cache || (
-            this._cache = new LRUCache(
-                {
-                    name: 'REST data cache '+this.name,
-                    maxSize: 25000, // cache up to about 5MB of data (assuming about 200B per feature)
-                    sizeFunction: function( data ) { return data.length || 1; },
-                    fillCallback: function( request, callback ) {
-                        var get = dojoRequest( request.url, { method: 'GET', handleAs: 'json',
-                                                              headers : { 'Authorization': 'Bearer 7216bcb47ff9243dac2224d12b39664' } },
-                                               true // work around dojo/request bug
-                                             );
-                        get.then(
-                            function(data) {
-                                var nocacheResponse = /no-cache/.test(get.response.getHeader('Cache-Control'))
-                                    || /no-cache/.test(get.response.getHeader('Pragma'));
-                                callback({ response: data, request: request }, null, {nocache: nocacheResponse});
-                            },
-                            thisB._errorHandler( lang.partial( callback, null ) )
-                        );
-                    }
-                }));
     },
 
     _makeURL: function( subpath, query ) {
