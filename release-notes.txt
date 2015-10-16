@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+# Release 1.11.6-a7ddd9c     2015-10-16 11:55:18 EST5EDT
+
 # Release 1.11.6-a842094     2015-08-05 10:02:13 America/New_York
 
 # Release 1.11.6-2141cde     2015-07-02 16:16:21 America/New_York
