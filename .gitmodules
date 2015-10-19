@@ -37,3 +37,6 @@
 [submodule "src/FileSaver"]
 	path = src/FileSaver
 	url = git://github.com/dkasenberg/FileSaver.js.git
+[submodule "plugins/SeqLighter"]
+	path = plugins/SeqLighter
+	url = https://github.com/Arabidopsis-Information-Portal/SeqLighter.git
