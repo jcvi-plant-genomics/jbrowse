@@ -37,6 +37,3 @@
 [submodule "src/FileSaver"]
 	path = src/FileSaver
 	url = git://github.com/dkasenberg/FileSaver.js.git
-[submodule "src/biojs"]
-	path = plugins/SeqLighter/jslib/biojs
-	url = https://github.com/Arabidopsis-Information-Portal/biojs1
