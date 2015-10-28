@@ -31,7 +31,7 @@ return declare( [ REST, RESTAuth ],
 {
 
     getGlobalStats: function( callback, errorCallback ) {
-        var url = this._makeURL( 'search?endpoint=globalStats' );
+        var url = this._makeURL( 'search?q=globalStats' );
         this._get({ url: url, type: 'globalStats' }, callback, errorCallback );
     },
 
@@ -43,14 +43,14 @@ return declare( [ REST, RESTAuth ],
         }
 
         query = this._assembleQuery( query );
-        var url = this._makeURL( 'search?action=regionStats&chr=', query );
+        var url = this._makeURL( 'search?q=regionStats&chr=', query );
         this._get( { url: url, query: query, type: 'regionStats' }, successCallback, errorCallback );
     },
 
     getFeatures: function( query, featureCallback, endCallback, errorCallback ) {
         var thisB = this;
         query = this._assembleQuery( query );
-        var url = this._makeURL( 'search?action=features&chr=', query );
+        var url = this._makeURL( 'search?q=features&chr=', query );
 
         // look for cached feature regions if configured to do so
         var cachedFeatureRegions;
@@ -75,7 +75,7 @@ return declare( [ REST, RESTAuth ],
     // this method is copied to getRegionFeatureDensities in the
     // constructor if config.region_feature_densities is true
     _getRegionFeatureDensities: function( query, histDataCallback, errorCallback ) {
-        var url = this._makeURL( 'search?action=regionFeatureDensities&chr=', this._assembleQuery( query ) );
+        var url = this._makeURL( 'search?q=regionFeatureDensities&chr=', this._assembleQuery( query ) );
         this._get( { url: url}, histDataCallback, errorCallback );
 
         // query like:
