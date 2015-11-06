@@ -13,8 +13,8 @@
                 }
 	    },
         "defaultLocation" : "Chr1:24330920..24334428",
-        "defaultTracks" : "TAIR10_genome,Araport11_Loci,Araport11_gene_models,light_tophat,TAIR9_tDNAs,SALK_tDNAs,Vista_Alyrata",
-        "forceTracks" : "TAIR10_genome,Araport11_Loci,Araport11_gene_models,light_tophat,TAIR9_tDNAs,SALK_tDNAs,Vista_Alyrata",
+        "defaultTracks" : "TAIR10_genome,Araport11_Loci,Araport11_gene_models,light_tophat,TAIR9_tDNAs,SALK_tDNAs",
+        "forceTracks" : "TAIR10_genome,Araport11_Loci,Araport11_gene_models,light_tophat,TAIR9_tDNAs,SALK_tDNAs",
         "projectHome" : {
             "logo" : "<img src='https://s.gravatar.com/avatar/978e836a9d65238a784543ad932637cd.png' alt='Araport' height='27px' />",
             "href" : "https://www.araport.org",
