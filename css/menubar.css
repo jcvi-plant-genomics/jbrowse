@@ -37,7 +37,7 @@ div.menuBar a, .topLink a {
     width: 19px;
     display: inline;
     display: inline-block;
-    background: url("img/glyphs_white.png") no-repeat -149px -91px;
+    background: url("../img/glyphs_white.png") no-repeat -149px -91px;
     margin-right: 2px;
     margin-top: -2px;
     vertical-align: middle;
@@ -84,7 +84,7 @@ a.topLink, a.topLink * {
     margin-top: -2px;
     display: inline;
     display: inline-block;
-    background: url("img/glyphs_white.png") no-repeat -168px -27px;
+    background: url("../img/glyphs_white.png") no-repeat -168px -27px;
     vertical-align: middle;
 }
 
@@ -114,7 +114,7 @@ a.topLink, a.topLink * {
     border-color: transparent;
 }
 .menuBar > .dataset_select .dijitArrowButtonInner {
-    background: url("img/spriteArrows.png") no-repeat scroll -56px center;
+    background: url("../img/spriteArrows.png") no-repeat scroll -56px center;
 }
 
 .tundra .globalMenu .dijitMenuItem td {
@@ -140,4 +140,21 @@ a.topLink, a.topLink * {
 }
 .tundra .menuBar > .menu .dijitDropDownButtonActive .dijitButtonNode {
     border: none;
+}
+
+
+
+.welcome_button {
+    border: 1px black;
+    background-color: #396494;
+    color: white;
+    padding: 10px;
+    margin: 2px;
+    width: 200px
+}
+
+
+
+.welcome_button:hover {
+    background-color: #3A8A9A;
 }

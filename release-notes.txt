@@ -1,5 +1,87 @@
 {{$NEXT}}
 
+## New features
+
+ * Added ability to open a new genome in FASTA format from the
+   browser.  Also supports indexed FASTA. Thanks to Bradford Powell
+   for the original indexed FASTA contribution (issue #495,
+   issue #647).
+
+ * Support for inline reference sequence configurations.
+
+ * Created stand-alone desktop version of JBrowse using the Electron
+   platform for OSX, Windows, Linux (issue #647).
+
+## New plugins
+
+ * NeatHTMLFeatures - Add the drawing of introns and gradient features
+   to HTML tracks.
+
+ * NeatCanvasFeatures - Add the drawing of introns and gradient
+   features to Canvas tracks.
+
+ * CategoryUrl - Implements a cat= URL option to display tracks for a
+   given category (issue #618).
+
+ * DebugEvents - a plugin to display global publish and milestone
+   events on the debug console.
+
+ * HideTrackLabels - Adds a toolbar button to toggle the display of
+   track labels on and off (issue #614).
+
+## Minor improvements
+
+ * Added new menu format to support loading your own genome. The open
+   genome option can be hidden via `hideGenomeOption` in config, and
+   the classic menu style can be restored via `classicMenu` in config.
+
+ * Added ability to load custom histograms for tracks loaded from
+   flatfile-to-json.pl (i.e. override a pre-existing histogram store).
+   See (issue #612).
+
+ * Added these options to add-bw-track.pl --clip_marker_color <color>,
+   --bg_color <color>, --height <value> (issue #510).
+
+ * Added an option for Wiggle tracks, scoreType: 'avgValue', which
+   helps preserve continuity when zooming in on certain tracks like
+   GC-content. It complements the scoreType: 'maxValue' introduced in
+   1.11.6. Thanks to Han Lin for the pull request (issue #504).
+
+ * Clarify track filter box description and feature search box
+   "placeholder" text. (issue #611)
+
+ * Implement option to have a separate location box from search box
+   (issue #611, issue #652).
+
+ * Move CSS files into css folder.
+
+ * Added ability to specify the set of startCodons and stopCodons in
+   the config files. Thanks to Eric Rasche for the contribution (issue
+   #657)!
+
+## Bug fixes
+
+ * Add Travis-CI and jshint linting to build (issue #628).
+
+ * Fixed a bug where the BAM popup boxes would display some incorrect
+   info due to byte packing. Thanks to Thomas Downs for contributing
+   the fix.
+
+ * Fixed a bug where grid lines wouldn't render at some particular
+   zoom levels (issue #514).
+
+ * Fixed a bug where the user's --workdir parameter would be deleted
+   which could have unintended side effects if the --workdir was
+   pointing to important data, but this is uncommon (issue #563).
+
+ * Allow falsey values to be used in browser.cookie.
+
+ * Fix minor issue where sometimes the length field of refSeqs.json
+   was missing.
+
+ * Fix some issues that occurred when a reference sequence was named
+   '0' (issue #662, issue #610).
+
 # Release 1.11.6-a7ddd9c     2015-10-16 11:55:18 EST5EDT
 
 # Release 1.11.6-a842094     2015-08-05 10:02:13 America/New_York
@@ -8,9 +90,7 @@
 
 # Release 1.11.6-675d21c     2015-06-24 14:34:00 EST5EDT
 
-# Release 1.11.6     2015-05-22 11:23:01 America/New_York
-
-# Release 1.11.5     2014-12-19 16:12:09 America/New_York
+# Release 1.11.6     2015-02-12 18:27:38 America/Chicago
 
 ## Minor improvements
 
@@ -30,8 +110,6 @@
    on Alignments2 tracks with the "Use reverse template" option.
    Thanks to Tomaz Berisa and Colin Diesh for their contributions
    (issue #485).
-
- * Added the ability to parse boolean literals from the .conf files.
 
  * Added the ability to specify a codon table (or partial codon table)
    for the Sequence track.

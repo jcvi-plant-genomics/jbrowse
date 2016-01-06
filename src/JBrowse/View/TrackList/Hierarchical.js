@@ -130,14 +130,14 @@ return declare(
                       thisB.categories.Uncategorized.pane.domNode.style.display = 'none';
                   }
               },
-              sort: sorter 
+              sort: sorter
             });
     },
 
     addTracks: function( tracks, inStartup ) {
         this.pane = this;
         var thisB = this;
-       
+
         array.forEach( tracks, function( track ) {
             var trackConf = track.conf || track;
 
@@ -222,7 +222,7 @@ return declare(
 
     _updateTitle: function( category ) {
         category.pane.set( 'title', category.pane.get('title')
-                           .replace( />\s*\d+\s*\</, '>'+query('label.shown', category.pane.containerNode ).length+'<' )
+                           .replace( />\s*\d+\s*</, '>'+query('label.shown', category.pane.containerNode ).length+'<' )
                          );
     },
 

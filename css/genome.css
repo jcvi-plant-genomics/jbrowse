@@ -1,17 +1,19 @@
 /* main application CSS styles */
-@import url("src/dijit/themes/tundra/tundra.css");
-@import url("src/dojo/resources/dojo.css");
+
+@import url("../src/dijit/themes/tundra/tundra.css");
+@import url("../src/dojo/resources/dojo.css");
+@import url("../src/dojox/grid/enhanced/resources/EnhancedGrid.css");
 
 @import url("main.css");
 @import url("sequence.css");
 @import url("menubar.css");
+@import url("toolbar.css");
 @import url("icons.css");
 @import url("tristate.css");
 @import url("file_dialog.css");
 @import url("combination_tracks.css");
 @import url("export_dialog.css");
 @import url("popup.css");
-@import url("src/dojox/grid/enhanced/resources/EnhancedGrid.css");
 
 /* CSS styles for the various types of feature glyphs */
 @import url("track_styles.css");

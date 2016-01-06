@@ -16,7 +16,7 @@
  * 		.dojoxTriStateCheckBoxDisabled|.dojoxTriStateCheckBoxCheckedDisabled|.dojoxTriStateCheckBoxMixedDisabled - for background image
  */
 .tundra .dojoxTriStateCheckBox,  .dojoxTriStateCheckBoxIcon {
-  background-image: url('img/tristate.png');
+  background-image: url('../img/tristate.png');
   /* checkbox sprite image */
 
   background-repeat: no-repeat;
@@ -26,7 +26,7 @@
   padding: 5px 5px 5px 5px;
 }
 .dj_ie6 .tundra .dojoxTriStateCheckBox, .dj_ie6  .dojoxTriStateCheckBoxIcon {
-  background-image: url('img/tristate.png');
+  background-image: url('../img/tristate.png');
   /* checkbox sprite image */
 
 }

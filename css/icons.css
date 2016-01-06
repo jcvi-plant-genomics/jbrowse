@@ -5,7 +5,7 @@
 .jbrowseIconHorizontalResize,
 .jbrowseIconVerticalResize
 {
-    background-image: url('img/commonIconsEnabled.png');
+    background-image: url('../img/commonIconsEnabled.png');
     width: 16px;
     height: 16px;
 }
@@ -17,7 +17,7 @@
 .dijitDisabled .jbrowseIconHorizontalResize,
 .dijitDisabled .jbrowseIconVerticalResize
 {
-    background-image: url('img/commonIconsDisabled.png');
+    background-image: url('../img/commonIconsDisabled.png');
     width: 16px;
     height: 16px;
 }
@@ -32,7 +32,7 @@
     background-position: -170px;
 }
 .jbrowseIconBusy {
-    background-image: url('img/spinner.gif');
+    background-image: url('../img/spinner.gif');
 }
 .jbrowseIconHorizontalResize {
     background-position: -209px;

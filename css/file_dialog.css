@@ -1,4 +1,4 @@
-@import url("src/dojox/form/resources/UploaderFileList.css");
+@import url("../src/dojox/form/resources/UploaderFileList.css");
 .fileDialog {
     color: #333;
 }
@@ -57,6 +57,19 @@
     height: 100%;
 }
 .fileDialog .resourceControls > div > h3 {
+    height: 19%;
+}
+
+.fileDialog .soleResourceControl {
+    height: 10em;
+    position: relative;
+}
+.fileDialog .soleResourceControl > div {
+    width: 40em;
+    box-sizing: border-box;
+    height: 100%;
+}
+.fileDialog .soleResourceControl > div > h3 {
     height: 19%;
 }
 
