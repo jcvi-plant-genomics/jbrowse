@@ -1,0 +1,116 @@
+#genotype-div {
+    width: 850px;
+    height: 1000px;
+    overflow:auto;
+}
+
+#primaryInfo {
+    width: 800px;
+    margin-bottom: 25px;
+}
+
+#tableElement1 {
+    width: 800px;
+    height: 30%;
+}
+
+#tableElement1:empty {
+    display:none;
+}
+
+#tableElement2 {
+    width: 800px;
+    height: 30%;
+}
+
+#tableElement2:empty {
+    display:none;
+}
+
+#tableElement3 {
+    width: 800px;
+    height: 30%;
+}
+
+#tableElement3:empty {
+    display:none;
+}
+
+#tableElement4 {
+    width: 800px;
+    height: 30%;
+}
+
+#tableElement4:empty {
+    display:none;
+}
+
+#tableElement5 {
+    width: 800px;
+    height: 30%;
+}
+
+#tableElement5:empty {
+    display:none;
+}
+
+.nodata {
+    color:red;
+    font-size:13px;
+    margin: 5px 0 10px 0;
+}
+
+.varTable {
+    font-size:14px;
+    color:#FFFFFF;
+    border-width: 5px;
+    border-color: #000000;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    border-radius: 10px;
+    text-align: left;
+    table-layout: fixed;
+    display:table;
+    width: 700px;
+}
+
+.varTable td {
+    height: 20px;
+    padding: 4px 4px 4px 10px;
+}
+
+.varHeader {
+    width: 30%;
+}
+
+.varValue {
+    width: 70%;
+}
+
+.odd {
+    background-color:#4785C2;
+    width: 700px;
+}
+
+.even {
+    background-color:#5B91C8;
+    width: 700px;
+}
+
+.tableHeaders {
+    font-size: 17px;
+    color: #000000;
+    margin: 5px 0 5px 0;
+    font-weight: bold;
+}
+
+.dataSource {
+    font-size: 12px;
+    color: #000000;
+}
+
+.variantColorLegend {
+    width: 300px;
+    height: 550px;
+    overflow:auto;
+}
