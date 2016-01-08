@@ -55,8 +55,6 @@ return declare( [ FeatureDetailMixin, VariantDetailMixin, VariantInfo, NamedFeat
             if( ! genotypes )
                 return;
 
-            var allGenotypeInfo = thisB.fetchAllGenotypeInfo();
-
             var keys = Util.dojof.keys( genotypes ).sort();
             var gCount = keys.length;
             if( ! gCount )
@@ -77,66 +75,15 @@ return declare( [ FeatureDetailMixin, VariantDetailMixin, VariantInfo, NamedFeat
                 },
                 parentElement );
 
+            var valueContainer = domConstruct.create(
+                'div',
+                {
+                    className: 'value_container genotypes',
+                    innerHTML: 'Loading.....'
+                }, gContainer );
 
-            function render( underlyingRefSeq ) {
-                var summaryElement = thisB._renderGenotypeSummary( gContainer, genotypes, alt, underlyingRefSeq );
-
-                var valueContainer = domConstruct.create(
-                    'div',
-                    {
-                        className: 'value_container genotypes'
-                    }, gContainer );
-
-                thisB.renderDetailValueGrid(
-                    valueContainer,
-                    'Genotypes',
-                    f,
-                    // iterator
-                    function() {
-                        if( ! keys.length )
-                            return null;
-                        var k = keys.shift();
-                        var genotypeName = allGenotypeInfo[k];
-                        var value = genotypes[k];
-                        var item = { id: genotypeName || k };
-                        for( var field in value ) {
-                            item[ field ] = thisB._mungeGenotypeVal( value[field], field, alt, underlyingRefSeq );
-                        }
-                        return item;
-                    },
-                    {
-                        descriptions: (function() {
-                                           if( ! keys.length )
-                                               return {};
-
-                                           var subValue = genotypes[keys[0]];
-                                           var descriptions = {};
-                                           for( var k in subValue ) {
-                                               descriptions[k] = subValue[k].meta && subValue[k].meta.description || null;
-                                           }
-                                           return descriptions;
-                                       })()
-                    }
-                );
-            };
-
-            track.browser.getStore('refseqs', function( refSeqStore ) {
-                                      if( refSeqStore ) {
-                                          refSeqStore.getReferenceSequence(
-                                              { ref: track.refSeq.name,
-                                                start: f.get('start'),
-                                                end: f.get('end')
-                                              },
-                                              render,
-                                              function() { render(); }
-                                          );
-                                      }
-                                      else {
-                                          render();
-                                      }
-            });
+            thisB.renderGenotypes(genotypes, alt, keys, track, f, gContainer, valueContainer);
         }
-
     });
 });
 

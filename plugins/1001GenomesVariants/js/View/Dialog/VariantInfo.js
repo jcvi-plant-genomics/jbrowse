@@ -26,7 +26,7 @@ function(
     ) {
     return declare( null, {
 
-        fetchAllGenotypeInfo: function() {
+        renderGenotypes: function(genotypes, alt, keys, track, f, gContainer, valueContainer) {
             var thisB = this;
             var allGenotypeInfo = {};
 
@@ -36,7 +36,6 @@ function(
 
             xhr(master_accession_list_url, {
                 handleAs: "json",
-                sync: "true",
                 query: {
                     alt_format: "true"
                 },
@@ -48,6 +47,58 @@ function(
                     var accession = data[i];
                     allGenotypeInfo[accession['id']] = accession['name'];
                 }
+                valueContainer.innerHTML = '';
+                function render( underlyingRefSeq ) {
+                    var summaryElement = thisB._renderGenotypeSummary( gContainer, genotypes, alt, underlyingRefSeq );
+                    thisB.renderDetailValueGrid(
+                            valueContainer,
+                            'Genotypes',
+                            f,
+                            // iterator
+                            function() {
+                                if( ! keys.length )
+                                    return null;
+                                var k = keys.shift();
+                                var genotypeName = allGenotypeInfo[k];
+                                var value = genotypes[k];
+                                var item = { id: genotypeName || k };
+                                var fieldMap = { 'GT' : 'Genotype', 'GQ' : 'Genotype Quality', 'DP' : 'Read Depth' };
+                                for( var field in value ) {
+                                    item[ fieldMap[field] ] = thisB._mungeGenotypeVal( value[field], field, alt, underlyingRefSeq );
+                                }
+                                return item;
+                            },
+                            {
+                                descriptions: (function() {
+                                    if( ! keys.length )
+                                        return {};
+
+                                    var subValue = genotypes[keys[0]];
+                                    var descriptions = {};
+                                    for( var k in subValue ) {
+                                        descriptions[k] = subValue[k].meta && subValue[k].meta.description || null;
+                                    }
+                                    return descriptions;
+                                })()
+                            }
+                    );
+                };
+
+                track.browser.getStore('refseqs', function( refSeqStore ) {
+                    if( refSeqStore ) {
+                        refSeqStore.getReferenceSequence(
+                                { ref: track.refSeq.name,
+                                    start: f.get('start'),
+                                    end: f.get('end')
+                                },
+                                render,
+                                function() { render(); }
+                                );
+                    }
+                    else {
+                        render();
+                    }
+                });
             }, function(err) {
                 console.log("Error while fetching genotype accession data:" + err);
             });
@@ -71,7 +122,7 @@ function(
             fmt( 'Length', Util.addCommas(f.get('end')-f.get('start'))+' bp',f );
             fmt( 'Description', this.getFeatureDescription( f ),f );
             fmt( 'Type', f.get('type'),f );
-            fmt( 'Read Depth', f.get('DP'), f);
+            fmt( 'Total Depth', f.get('DP'), f);
             fmt( 'Reference Allele', f.get('reference_allele'), f);
             fmt( 'Alternative Allele(s)', f.get('alternative_alleles'), f);
         },
