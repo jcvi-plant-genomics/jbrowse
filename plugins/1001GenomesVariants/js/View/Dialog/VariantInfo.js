@@ -117,7 +117,7 @@ function(
                         end: f.get('end'),
                         ref: this.refSeq.name,
                         strand: f.get('strand')
-                    }),f
+                    }), f
                );
             fmt( 'Length', Util.addCommas(f.get('end')-f.get('start'))+' bp',f );
             fmt( 'Description', this.getFeatureDescription( f ),f );
@@ -153,42 +153,39 @@ function(
                     selectable: true,
                     store: dataStore,
                     structure: [{
-                        "name" : "Effect",
-                        "field" : "Effect"
+                        "name" : "Gene Name",
+                        "field" : "Gene_Name",
+                        "width" : "10%"
+                    },  {
+                        "name" : "Transcript ID",
+                        "field" : "Transcript_ID",
+                        "width" : "10%"
                     }, {
-                        "name" : "Effect Impact",
-                        "field" : "Effect_Impact"
+                        "name" : "SO Term",
+                        "field" : "Effect",
+                        "width" : "30%"
                     }, {
-                        "name" : "Functional Class",
-                        "field" : "Functional_Class"
+                        "name" : "Biotype",
+                        "field" : "Transcript_BioType",
+                        "width" : "20%"
                     }, {
                         "name" : "Codon Change",
-                        "field" : "Codon_Change"
+                        "field" : "Codon_Change",
+                        "width" : "10%"
                     }, {
-                        "name" : "Amino Acid Change",
-                        "field" : "Amino_Acid_Change"
+                        "name" : "AA Change",
+                        "field" : "Amino_Acid_Change",
+                        "width" : "10%"
                     }, {
-                        "name" : "Amino Acid Length",
-                        "field" : "Amino Acid length"
-                    }, {
-                        "name" : "Gene Name",
-                        "field" : "Gene_Name"
-                    }, {
-                        "name" : "Transcript BioType",
-                        "field" : "Transcript_BioType"
-                    }, {
-                        "name" : "Gene Coding",
-                        "field" : "Gene_Coding"
-                    }, {
-                        "name" : "Transcript ID",
-                        "field" : "Transcript_ID"
-                    }, {
-                        "name" : "Exon Rank",
-                        "field" : "Exon_Rank"
-                    }, {
-                        "name" : "Genotype Number",
-                        "field" : "Genotype_Number"
-                    }]
+                        "name" : "AA Length",
+                        "field" : "Amino Acid length",
+                        "width" : "10%"
+                    }],
+                    plugins: {
+                        filter: {
+                            closeFilterbarButton: true
+                        }
+                    }
                 }, value_container);
                 grid.startup();
             }
@@ -196,10 +193,11 @@ function(
 
         parseEFFString: function(value) {
             var snpEffData = [];
-            var headers = ["Effect_Impact", "Functional_Class", "Codon_Change", "Amino_Acid_Change","Amino_Acid_length", "Gene_Name", "Transcript_BioType", "Gene_Coding", "Transcript_ID", "Exon_Rank", "Genotype_Number"];
+            var headers = ["Effect_Impact", "Functional_Class", "Codon_Change", "Amino_Acid_Change", "Amino_Acid_length",
+                           "Gene_Name", "Transcript_BioType", "Gene_Coding", "Transcript_ID", "Exon_Rank", "Genotype_Number"];
 
             for(var i = 0; i < value.length; i++) {
-                var pat = /^(\D+)\((.*)\)$/;
+                var pat = /^(\w+)\((.*)\)$/;
                 var match = pat.exec(value[i]);
                 if (match != null) {
                     var effect = match[1];
@@ -213,23 +211,6 @@ function(
                 }
             }
             return snpEffData;
-        },
-
-        variantColor: function(feature) {
-            var colorArray = new Array();
-            colorArray = [{'type': 'All_Consequences', 'color': '#ffffff', 'num': '35'},{'type': 'transcript_ablation', 'color': '#ff0000', 'num': '34'},{'type': 'splice_donor_variant', 'color': '#ff7f50', 'num': '33'},{'type': 'splice_acceptor_variant', 'color': '#ff7f50', 'num': '32'},{'type': 'stop_gained', 'color': '#ff0000', 'num': '31'},{'type': 'frameshift_variant', 'color': '#ff69b4', 'num': '30'},{'type': 'stop_lost', 'color': '#ff0000', 'num': '29'},{'type': 'initiator_codon_variant', 'color': '#ffd700', 'num': '28'},{'type': 'inframe_insertion', 'color': '#ff69b4', 'num': '27'},{'type': 'inframe_deletion', 'color': '#ff69b4', 'num': '26'},{'type': 'missense_variant', 'color': '#ffd700', 'num': '25'},{'type': 'transcript_amplification', 'color': '#ff69b4', 'num': '24'},{'type': 'splice_region_variant', 'color': '#ff7f50', 'num': '23'},{'type': 'incomplete_terminal_codon_variant', 'color': '#ff00ff', 'num': '22'},{'type': 'synonymous_variant', 'color': '#76ee00', 'num': '21'},{'type': 'stop_retained_variant', 'color': '#76ee00', 'num': '20'},{'type': 'coding_sequence_variant', 'color': '#458b00', 'num': '19'},{'type': 'mature_miRNA_variant', 'color': '#458b00', 'num': '18'},{'type': '5_prime_UTR_variant', 'color': '#7ac5cd', 'num': '17'},{'type': '3_prime_UTR_variant', 'color': '#7ac5cd', 'num': '16'},{'type': 'non_coding_exon_variant', 'color': '#32cd32', 'num': '15'},{'type': 'non_coding_transcript_variant', 'color': '#32cd32', 'num': '14'},{'type': 'intron_variant', 'color': '#02599c', 'num': '13'},{'type': 'NMD_transcript_variant', 'color': '#ff4500', 'num': '12'},{'type': 'upstream_gene_variant', 'color': '#a2b5cd', 'num': '11'},{'type': 'downstream_gene_variant', 'color': '#a2b5cd', 'num': '10'},{'type': 'TFBS_ablation', 'color': '#a52a2a', 'num': '9'},{'type': 'TFBS_amplification', 'color': '#a52a2a', 'num': '8'},{'type': 'TF_binding_site_variant', 'color': '#a52a2a', 'num': '7'},{'type': 'regulatory_region_variant', 'color': '#a52a2a', 'num': '6'},{'type': 'regulatory_region_ablation', 'color': '#a52a2a', 'num': '5'},{'type': 'regulatory_region_amplification', 'color': '#a52a2a', 'num': '4'},{'type': 'feature_elongation', 'color': '#7f7f7f', 'num': '3'},{'type': 'feature_truncation', 'color': '#7f7f7f', 'num': '2'},{'type': 'intergenic_variant', 'color': '#636363', 'num': '1'}];
-            var ve = feature.data.VE;
-            var color = "#000000";
-            var most_severe_num = 0;
-            var msc = feature.data.MSC;
-            variantType = "";
-            variantType = msc.toString();
-            for (var i = 0, len = colorArray.length; i < len; i++) {
-                if (colorArray[i].type === variantType) {
-                    color = colorArray[i].color;
-                }
-            }
-            return color;
         }
     });
 });
