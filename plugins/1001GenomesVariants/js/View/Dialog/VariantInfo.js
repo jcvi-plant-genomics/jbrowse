@@ -30,7 +30,7 @@ function(
             var thisB = this;
             var allGenotypeInfo = {};
 
-            var accessToken = '2c3602085267e1c935bbfb7da6dd2e';
+            var accessToken = '3e26d3b2d343ddbdbfb41afd331d7e9';
             var apiBaseUrl = 'https://api.araport.org/community/v0.3';
             var master_accession_list_url = apiBaseUrl + '/gmi' + '/master_accession_list_v0.1.0' + '/list';
 

@@ -30,7 +30,7 @@ return declare( [ REST ],
 {
 
     _setToken: function() {
-        this.config.accessToken = '2c3602085267e1c935bbfb7da6dd2e';
+        this.config.accessToken = '3e26d3b2d343ddbdbfb41afd331d7e9';
     },
 
     // HELPER METHODS

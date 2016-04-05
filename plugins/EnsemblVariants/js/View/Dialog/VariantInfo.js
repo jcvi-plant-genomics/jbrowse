@@ -40,7 +40,7 @@ define( "EnsemblVariants/View/Dialog/VariantInfo", [
 		    var url_variation = '?content-type=application/json&protein=1&numbers=1&canonical=1&ccds=1&domains=1';
 		    var json_variation_url = url_base2 + variant_id + url_variation;
 
-		    var token = "2c3602085267e1c935bbfb7da6dd2e";
+		    var token = "3e26d3b2d343ddbdbfb41afd331d7e9";
 		    var standby = "<div id='standby1'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby2 = "<div id='standby2'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
 		    var standby3 = "<div id='standby3'><img src='plugins/EnsemblVariants/img/ajax-loader.gif'></div>";
