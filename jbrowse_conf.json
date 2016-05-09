@@ -19,5 +19,6 @@
             "logo" : "<img src='https://s.gravatar.com/avatar/978e836a9d65238a784543ad932637cd.png' alt='Araport' height='27px' />",
             "href" : "https://www.araport.org",
             "title" : "Araport Home"
-        }
+        },
+        "classicMenu" : true
 }

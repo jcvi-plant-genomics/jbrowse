@@ -988,8 +988,15 @@ createCombinationTrack: function() {
 renderDatasetSelect: function( parent ) {
     var thisB=this;
 
-
-
+    if (this.config.projectHome) {
+        var projectHome = this.config.projectHome;
+        dojo.create('a', {
+            className: 'powered_by',
+            innerHTML: projectHome['logo'],
+            title: projectHome['title'],
+            href: projectHome['href']
+        }, parent );
+    }
 
     if(this.config.classicMenu) {
         var dsconfig = this.config.datasets || {};
@@ -1021,16 +1028,6 @@ renderDatasetSelect: function( parent ) {
         if( this.config.datasets && this.config.dataset_id ) {
             this.addGlobalMenuItem( 'dataset',
                     new dijitMenuSeparator() );
-
-        if (this.config.projectHome) {
-            var projectHome = this.config.projectHome;
-            dojo.create('a', {
-                className: 'powered_by',
-                innerHTML: projectHome['logo'],
-                title: projectHome['title'],
-                href: projectHome['href']
-            }, parent );
-        }
 
         var first_dataset_id = undefined;
         for( var id in this.config.datasets ) {
