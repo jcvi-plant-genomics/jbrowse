@@ -40,3 +40,6 @@
 [submodule "plugins/SeqLighter"]
 	path = plugins/SeqLighter
 	url = https://github.com/Arabidopsis-Information-Portal/SeqLighter.git
+[submodule "ComboTrackSelector"]
+	path = plugins/ComboTrackSelector
+	url = https://github.com/Arabidopsis-Information-Portal/ComboTrackSelector.git
