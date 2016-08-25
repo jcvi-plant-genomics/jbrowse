@@ -32,7 +32,7 @@ _defaultConfig: function() {
 
             impliedUTRs: false,
 
-            inferCdsParts: false,
+            inferCdsParts: false
         });
 },
 
