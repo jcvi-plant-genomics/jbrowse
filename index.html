@@ -83,6 +83,7 @@
                        show_tracklist: queryParams.tracklist,
                        show_overview: queryParams.overview,
                        show_menu: queryParams.menu,
+                       show_fullviewlink: queryParams.fullviewlink,
                        show_tracklabels: queryParams.tracklabels,
                        highResolutionMode: queryParams.highres,
                        stores: { url: { type: "JBrowse/Store/SeqFeature/FromConfig", features: [] } },
@@ -131,7 +132,7 @@
                        is_production = false;
                    } // end if(hostname.search(dev_test) != -1)
 
-                   if(queryParams.nav && queryParams.tracklist && queryParams.overview && queryParams.menu) {
+                   if(queryParams.nav && queryParams.tracklist && queryParams.overview) {
                        is_embed = true;
                    }
 
