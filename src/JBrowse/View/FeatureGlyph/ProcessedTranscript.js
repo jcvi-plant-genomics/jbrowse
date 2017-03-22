@@ -67,9 +67,9 @@ _makeCDSs: function( parent, subparts ) {
     for( i = 0; i < subparts.length; i++ ) {
         type = subparts[i].get('type');
         if( /^cds/i.test( type ) ) {
-            // if any CDSs present which are flagged as 'inferred'
+            // if any CDSs parts are present already,
             // bail and return all subparts as-is
-            if( /infer/i.test( subparts[i].get('name') ) )
+            if( /:CDS:/i.test( subparts[i].get('name') ) )
                 return subparts;
 
             codeIndices.push(i);
@@ -105,17 +105,22 @@ _makeCDSs: function( parent, subparts ) {
         start = exons[i].get('start');
         end = exons[i].get('end');
 
-        // first exon
-        if( codeStart >= start && codeStart < end ) {
+        // CDS containing exon
+        if( codeStart >= start && codeEnd <= end ) {
+            codePartStart = codeStart;
+            codePartEnd = codeEnd;
+        }
+        // 5' terminal CDS part
+        else if( codeStart >= start && codeStart < end ) {
             codePartStart = codeStart;
             codePartEnd = end;
         }
-        // last exon
+        // 3' terminal CDS part
         else if( codeEnd > start && codeEnd <= end ) {
             codePartStart = start;
             codePartEnd = codeEnd;
         }
-        // internal exon
+        // internal CDS part
         else if( start < codeEnd && end > codeStart ) {
             codePartStart = start;
             codePartEnd = end;
@@ -130,7 +135,7 @@ _makeCDSs: function( parent, subparts ) {
                             end: codePartEnd,
                             strand: strand,
                             type: 'CDS',
-                            name: parent.get('uniqueID') + ":CDS:infer:" + i
+                            name: parent.get('uniqueID') + ":CDS:" + i
                         }})));
     }
 
@@ -241,13 +246,6 @@ _getFeatureHeight: function( viewInfo, feature ) {
         return height*0.65;
 
     return height;
-},
-
-_isBetween: function (coord, min, max, which) {
-    if ( which == "start" )
-        return coord >= min && coord < max;
-    if ( which == "end" )
-        return coord > min && coord <= max;
 }
 
 });
