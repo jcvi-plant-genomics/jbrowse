@@ -6,19 +6,19 @@
 // jbrowse.conf is much easier to hand-edit.
 {
         "suppressUsageStatistics" : true,
-        "datasets" : {
-	            "arabidopsis":  {
-                    "url" : "?data=arabidopsis",
-                    "name" : "Araport11 Annotation Release"
+	    "datasets" : {
+		        "medicago" :  {
+                    "url" : "?data=medicago",
+                    "name" : "Medicago truncatula v4.0"
                 }
-	    },
-        "defaultLocation" : "Chr1:24330920..24334428",
-        "defaultTracks" : "TAIR10_genome,Araport11_Loci,Araport11_gene_models,light_tophat,TAIR9_tDNAs,SALK_tDNAs",
-        "forceTracks" : "TAIR10_genome,Araport11_Loci,Araport11_gene_models,light_tophat,TAIR9_tDNAs,SALK_tDNAs",
+        },
+        "defaultLocation" : "chr1:39416540..39420427",
+        "defaultTracks" : "DNA,Root%20(4%20week)%20RNA-seq%20Coverage,gene_models,gmap_TCs,Affymetrix_ProbeSets",
+        "forceTracks" : "DNA,Root%20(4%20week)%20RNA-seq%20Coverage,gene_models,gmap_TCs,Affymetrix_ProbeSets",
         "projectHome" : {
-            "logo" : "<img src='https://s.gravatar.com/avatar/978e836a9d65238a784543ad932637cd.png' alt='Araport' height='27px' />",
-            "href" : "https://www.araport.org",
-            "title" : "Araport Home"
+            "logo" : "<img src='/medicago/include/images/mtr_leaf.png' alt='Medicago truncatula' height='20px' />",
+            "href" : "http://www.medicagogenome.org",
+            "title" : "Medicago truncatula Genome Database (MTGD)"
         },
         "classicMenu" : true
 }
