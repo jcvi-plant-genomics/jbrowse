@@ -5,33 +5,26 @@ define([
            'JBrowse/Model/XHRBlob'
        ],
        function( declare, Util, FileBlob, XHRBlob ) {
-
 var uniqCounter = 0;
-return declare( null,  {
-    name: 'FASTA',
-    storeType: 'JBrowse/Store/SeqFeature/UnindexedFasta',
+return declare( null, {
 
-    fileExtension: 'fasta',
-    fileConfKey: 'fasta',
-    fileUrlConfKey: 'urlTemplate',
-
-
+    storeType: 'JBrowse/Store/SeqFeature/BED',
 
     tryResource: function( configs, resource ) {
-        if( resource.type == 'fasta' ) {
+        if( resource.type == 'bed' ) {
             var basename = Util.basename(
                 resource.file ? resource.file.name :
                 resource.url  ? resource.url       :
                                 '',
-                [ '.fasta','.fa' ]
+                ['.bed']
             );
             if( !basename )
                 return false;
 
-            var newName = 'FASTA_'+basename+'_'+uniqCounter++;
+            var newName = 'BED_'+basename+'_'+uniqCounter++;
             configs[newName] = {
-                fileBasename: basename,
                 type: this.storeType,
+                fileBasename: basename,
                 blob: this._makeBlob( resource ),
                 name: newName
             };
@@ -41,24 +34,7 @@ return declare( null,  {
             return false;
     },
 
-    // try to merge any singleton BAM and BAI stores.  currently can only do this if there is one of each
     finalizeConfiguration: function( configs ) {
-        var deleteme = false;
-        for( var conf in configs ) {
-            if(configs[conf].fai) deleteme = true;
-        }
-        var fasta;
-        for( var conf in configs ) {
-            if( deleteme && configs[conf].type == "JBrowse/Store/SeqFeature/UnindexedFasta") {
-                fasta = configs[conf].blob;
-                delete configs[conf];
-            }
-        }
-        for( var conf in configs ) {
-            if( deleteme && configs[conf].type == "JBrowse/Store/SeqFeature/IndexedFasta") {
-                configs[conf].fasta = fasta;
-            }
-        }
     },
 
     _makeBlob: function( resource ) {
@@ -74,7 +50,5 @@ return declare( null,  {
     confIsValid: function( conf ) {
         return conf.blob || conf.urlTemplate;
     }
-
 });
-
 });

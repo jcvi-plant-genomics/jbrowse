@@ -102,8 +102,8 @@ _makeCDSs: function( parent, subparts ) {
     var codePartStart =  Infinity,
           codePartEnd = -Infinity;
     for ( i = 0; i < exons.length; i++ ) {
-        start = exons[i].get('start');
-        end = exons[i].get('end');
+        var start = exons[i].get('start');
+        var end = exons[i].get('end');
 
         // CDS containing exon
         if( codeStart >= start && codeEnd <= end ) {
@@ -126,8 +126,8 @@ _makeCDSs: function( parent, subparts ) {
             codePartEnd = end;
         }
 
-        // splice in the calculated cds part, tag cds identifier with 'infer'
-        // at beginning of _makeCDSs() method, bail if 'infer' tagged cds is encountered
+        // "splice in" the calculated cds part into subparts
+        // at beginning of _makeCDSs() method, bail if cds subparts are encountered
         subparts.splice(i, 0, ( new SimpleFeature(
                     {   parent: parent,
                         data: {

@@ -10,9 +10,72 @@ done_message () {
     fi
 }
 
+legacy_message () {
+   echo "Legacy scripts wig-to-json.pl and bam-to-json.pl have removed from setup. Their functionality has been superseded by add-bam-track.pl and add-bw-track.pl. If you require the old versions, run 'setup.sh legacy'."
+ }
+
+function check_node(){
+    node_executable=$(which node)
+    npm_executable=$(which npm)
+    if ! [ -x "$node_executable" ] ; then
+        nodejs_executable=$(which nodejs)
+        if ! [ -x "$nodejs_executable" ] ; then
+            echo "You must install 'Node JS' to install JBrowse from bower."
+        else
+            echo "Creating an alias 'node' for 'nodejs'"
+            node_executable="$nodejs_executable"
+        fi
+    fi
+    echo "Node installed";
+}
+
+function check_bower(){
+    check_node;
+    bower_executable=$(which bower)
+    if ! [ -x "$bower_executable" ] ; then
+        $npm_executable install -g bower
+        bower_executable=$(which bower)
+        if ! [ -x "$bower_executable" ] ; then
+            echo "You must install 'bower' to install JBrowse `npm install -g bower` using bower."
+        else
+            echo "Bower installed";
+        fi
+    else
+        echo "Bower installed";
+    fi
+}
+
+
 echo > setup.log;
 
+LEGACY_INSTALL=0
+if [ $# -gt 1 ] ; then
+  echo "USAGE: ./setup.sh [legacy]"
+  echo -e "\tTakes one optional argument, presence triggers legacy software install."
+  exit 1
+fi
+if [[ ($# -eq 1) && ("$1" = "legacy") ]] ; then
+  LEGACY_INSTALL=1
+else
+  legacy_message
+fi
+
+# if src/dojo/dojo.js exists, but that is the only file in that directory (or other directories don't exist)
+# OR
+# if dev we don't care
+echo  -n "Installing javascript dependencies ..."
+if [ -f "src/dojo/dojo.js" ] && ! [ -f "src/dojo/_firebug/firebug.js" ]; then
+    echo "Detected precompiled version." ;
+elif ! [ -f "src/dojo/dojo.js" ]; then
+    echo "Dojo does not exist, installing" ;
+    check_bower >> setup.log ;
+    $bower_executable install -f --allow-root >> setup.log ;
+fi
+echo "done"
+
+
 # log information about this system
+echo -n "Gathering system information ..."
 (
     echo '============== System information ====';
     set -x;
@@ -23,8 +86,9 @@ echo > setup.log;
     grep MemTotal /proc/meminfo;
     echo; echo;
 ) >>setup.log 2>&1;
+echo "done"
 
-echo -n "Installing Perl prerequisites ..."
+echo  -n "Installing Perl prerequisites ..."
 if ! ( perl -MExtUtils::MakeMaker -e 1 >/dev/null 2>&1); then
     echo;
     echo "WARNING: Your Perl installation does not seem to include a complete set of core modules.  Attempting to cope with this, but if installation fails please make sure that at least ExtUtils::MakeMaker is installed.  For most users, the best way to do this is to use your system's package manager: apt, yum, fink, homebrew, or similar.";
@@ -55,15 +119,18 @@ echo -n "Formatting Volvox example data ...";
     cat docs/tutorial/data_files/volvox_fromconfig.conf >> sample_data/json/volvox/tracks.conf
     cat docs/tutorial/data_files/volvox.gff3.conf >> sample_data/json/volvox/tracks.conf
     cat docs/tutorial/data_files/volvox.gtf.conf >> sample_data/json/volvox/tracks.conf
+    cat docs/tutorial/data_files/volvox.sort.gff3.gz.conf >> sample_data/json/volvox/tracks.conf
+    cat docs/tutorial/data_files/volvox.sort.bed.gz.conf >> sample_data/json/volvox/tracks.conf
+    cat docs/tutorial/data_files/bookmarks.conf >> sample_data/json/volvox/tracks.conf
     bin/add-json.pl '{ "dataset_id": "volvox", "include": [ "../../raw/volvox/functions.conf" ] }' sample_data/json/volvox/trackList.json
     bin/add-json.pl '{ "dataset_id": "volvox", "plugins": [ "NeatHTMLFeatures","NeatCanvasFeatures","HideTrackLabels" ] }' sample_data/json/volvox/trackList.json
     bin/generate-names.pl --safeMode -v --out sample_data/json/volvox;
 
     # also recreate some symlinks used by tests and such
-    if [ -d sample_data/json/modencode ]; then		
-            mkdir -p sample_data/json/modencode/tracks;		
-            ln -sf ../../volvox/tracks/volvox_microarray.wig sample_data/json/modencode/tracks/volvox_microarray.wig;		
-    fi;    
+    if [ -d sample_data/json/modencode ]; then
+            mkdir -p sample_data/json/modencode/tracks;
+            ln -sf ../../volvox/tracks/volvox_microarray.wig sample_data/json/modencode/tracks/volvox_microarray.wig;
+    fi;
     mkdir -p sample_data/raw;
     if [ ! -e sample_data/raw/volvox ]; then
         ln -s ../../docs/tutorial/data_files sample_data/raw/volvox;
@@ -90,6 +157,11 @@ echo -n "Formatting Yeast example data ...";
     bin/generate-names.pl --dir sample_data/json/yeast/;
 ) >>setup.log 2>&1
 done_message "To see the yeast example data, browse to http://your.jbrowse.root/index.html?data=sample_data/json/yeast.";
+
+if [ $LEGACY_INSTALL -eq 0 ] ; then
+   legacy_message
+   exit 0
+fi
 
 echo
 echo -n "Building and installing legacy wiggle format support (superseded by BigWig tracks) ...";
