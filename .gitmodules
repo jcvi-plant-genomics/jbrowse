@@ -4,3 +4,12 @@
 [submodule "ComboTrackSelector"]
 	path = plugins/ComboTrackSelector
 	url = https://github.com/Arabidopsis-Information-Portal/ComboTrackSelector.git
+[submodule "plugins/Araport"]
+	path = plugins/Araport
+	url = https://github.com/Arabidopsis-Information-Portal/AraportJBPlugin.git
+[submodule "plugins/1001GenomesVariants"]
+	path = plugins/1001GenomesVariants
+	url = https://github.com/Arabidopsis-Information-Portal/1001GenomesVariants.git
+[submodule "plugins/EnsemblVariants"]
+	path = plugins/EnsemblVariants
+	url = https://github.com/Arabidopsis-Information-Portal/EnsemblVariants.git
