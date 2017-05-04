@@ -4,7 +4,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>JBrowse</title>
     <link rel="stylesheet" type="text/css" href="css/genome.css">
-
     <script type="text/javascript">
             // jshint unused: false
             var dojoConfig = {
@@ -87,6 +86,7 @@
                        show_tracklabels: queryParams.tracklabels,
                        highResolutionMode: queryParams.highres,
                        stores: { url: { type: "JBrowse/Store/SeqFeature/FromConfig", features: [] } },
+                       bookmarks: { },
                        makeFullViewURL: function( browser ) {
 
                            // the URL for the 'Full view' link
@@ -110,6 +110,11 @@
                    // configuration
                    if( queryParams.addTracks ) {
                        config.tracks = JSON.parse( queryParams.addTracks );
+                   }
+
+                   // if there is ?addBookmarks, add those to configuration
+                   if( queryParams.addBookmarks ) {
+                       config.bookmarks.features = JSON.parse( queryParams.addBookmarks );
                    }
 
                    // if there is ?addStores in the query params, add

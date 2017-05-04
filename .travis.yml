@@ -1,22 +1,29 @@
 sudo: false
 language: perl
-perl:
-  - "5.14"
 addons:
   apt:
     packages:
     - libdb-dev
     - libgd2-noxpm-dev
+    - nginx
+cache:
+  - extlib/
+  - $HOME/perl5/
+before_install:
+  - cpanm --notest GD::Image Text::Markdown DateTime
+  - cpanm --notest git://github.com/bioperl/bioperl-live.git@v1.6.x
+  - npm install -g jshint bower
 install:
-  - cpanm --notest -L extlib/ GD::Image URI::Escape
-  - cpanm --notest -l extlib/ git://github.com/bioperl/bioperl-live.git@v1.6.x
-  - bash setup.sh
-  - npm install -g http-server jshint
+  - bower install
+  - bash setup.sh legacy
+before_script:
+  - cat tests/travis.conf | envsubst > tests/travis-envsubst.conf
+  - nginx -c `pwd`/tests/travis-envsubst.conf
 script:
-  - node src/dojo/dojo.js load=build --require "src/JBrowse/init.js" --profile "src/JBrowse/JBrowse.profile.js"
-  - nohup http-server -p 9000 2>&1 &
-  - prove -Isrc/perl5 -lr tests
   - phantomjs tests/js_tests/run-jasmine.js http://localhost:9000/tests/js_tests
   - jshint src/JBrowse/
-
-after_failure: cat setup.log 
+  - make -f build/Makefile release
+after_failure:
+  - cat JBrowse-1.x.x-dev/setup.log 
+  - find JBrowse-1.x.x-dev/extlib/lib/perl5
+  - cat JBrowse-1.x.x-dev/src/build-report.txt
